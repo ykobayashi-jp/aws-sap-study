@@ -29,21 +29,12 @@ open index.html   # macOS
 
 ```
 aws-sap-study/
-├── index.html          # アプリ本体（全コード同梱）
-├── README.md
-└── questions/          # 問題データを分割管理したい場合（任意）
-    ├── design.json
-    ├── security.json
-    ├── network.json
-    ├── cost.json
-    ├── migration.json
-    ├── container.json
-    ├── data.json
-    └── monitoring.json
+├── index.html   # アプリ本体（全コード同梱）
+└── README.md
 ```
 
-> 現状は `index.html` 内の `const QS = [...]` に全問題が含まれています。  
-> 問題数が増えてきたら `questions/` に分割し、fetch で読み込む形に移行できます。
+問題データは `index.html` 内の `const QS = [...]` に直接記載しています。  
+問題数が増えてきたら `questions/*.json` に分割して fetch で読み込む形に移行できます。
 
 ## Adding questions
 
