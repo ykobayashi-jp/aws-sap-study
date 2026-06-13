@@ -3,476 +3,355 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AWS SAP-C02 深掘り演習</title>
+<title>AWS SAP-C02 演習 | aws-sap-study</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
+:root{
+  --bg:#0F1117;--surface:#1A1D27;--surface2:#22263A;--border:#2D3149;--border2:#3A3F5C;
+  --text:#E6EDF3;--muted:#7D8590;--hint:#4A5568;
+  --blue:#4F8EF7;--blue-dim:#1E2D4F;--blue-text:#93BFFC;
+  --green:#34D058;--green-dim:#0D2E1A;--green-text:#56E87A;
+  --red:#F85149;--red-dim:#2E0D0D;--red-text:#FF7B72;
+  --amber:#E3B341;--amber-dim:#2A1F06;--amber-text:#F0C96A;
+  --purple:#C084FC;--purple-dim:#1E1030;--purple-text:#D8A4FC;
+  --teal:#39D353;--teal-dim:#0A2E1C;
+  --r:10px;--rl:14px;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f6f8fa;color:#1a1a1a;padding:1.5rem}
-.app{max-width:760px;margin:0 auto}
-h1{font-size:20px;font-weight:600;margin-bottom:4px}
-.subtitle{font-size:13px;color:#666;margin-bottom:1.25rem}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem}
-.stat{background:#fff;border:1px solid #e1e4e8;border-radius:8px;padding:10px;text-align:center}
-.stat-n{font-size:20px;font-weight:600}
-.stat-l{font-size:11px;color:#666;margin-top:1px}
-/* FIX 2: カテゴリボタンに件数バッジ + 0問はdisabled */
-.cat-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem}
-.cat-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;border:1px solid #d0d7de;background:#fff;color:#555;font-size:12px;cursor:pointer;transition:all .15s}
-.cat-btn:hover:not(:disabled){background:#f3f4f6;border-color:#aaa}
-.cat-btn.on{background:#0969da;color:#fff;border-color:#0969da}
-.cat-btn:disabled{opacity:.4;cursor:not-allowed}
-.cat-count{font-size:11px;opacity:.75}
-.prog-bar{height:3px;background:#e1e4e8;border-radius:2px;margin-bottom:1rem;overflow:hidden}
-.prog-fill{height:100%;background:#0969da;border-radius:2px;transition:width .3s}
-.qcard{background:#fff;border:1px solid #e1e4e8;border-radius:12px;padding:1.25rem}
-.qmeta{display:flex;gap:6px;align-items:center;margin-bottom:.875rem;flex-wrap:wrap}
-.badge{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:500;border:1px solid transparent}
-.b-blue{background:#ddf4ff;color:#0550ae;border-color:#b6e3ff}
-.b-purple{background:#fbefff;color:#6e40c9;border-color:#e2c5fd}
-.b-amber{background:#fff8c5;color:#7d4e00;border-color:#f0c000}
-.b-red{background:#ffebe9;color:#a40e26;border-color:#ffcecb}
-.b-green{background:#dafbe1;color:#116329;border-color:#aceebb}
-.b-teal{background:#e6ffec;color:#0d5c3a;border-color:#9ce4c0}
-.b-coral{background:#fff0e6;color:#8a2700;border-color:#ffc2a1}
-.b-gray{background:#f6f8fa;color:#444;border-color:#d0d7de}
-.qnum{font-size:12px;color:#999;margin-left:auto}
-.qtxt{font-size:15px;line-height:1.75;margin-bottom:1.125rem}
-.opts{display:flex;flex-direction:column;gap:7px;margin-bottom:1.125rem}
-.opt{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:8px;border:1px solid #d0d7de;cursor:pointer;background:#fff;transition:all .15s}
-.opt:hover:not(.dis){background:#f6f8fa;border-color:#888}
-.opt.ok{background:#dafbe1;border-color:#2da44e}
-.opt.ng{background:#ffebe9;border-color:#cf222e}
-.opt.show-ok{background:#dafbe1;border-color:#2da44e}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh}
+
+/* layout */
+.wrap{max-width:680px;margin:0 auto;padding:1.5rem 1rem 6rem}
+
+/* header */
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;gap:8px;flex-wrap:wrap}
+.hdr-left h1{font-size:18px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px}
+.hdr-left p{font-size:12px;color:var(--muted);margin-top:2px}
+.hdr-right{display:flex;gap:8px;align-items:center}
+.btn-study{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:var(--r);background:var(--surface);border:1px solid var(--border2);color:var(--muted);font-size:13px;text-decoration:none;transition:all .2s}
+.btn-study:hover{border-color:var(--blue);color:var(--blue-text)}
+.btn-ghost{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:var(--r);background:transparent;border:1px solid transparent;color:var(--muted);font-size:13px;cursor:pointer;transition:all .2s}
+.btn-ghost:hover{background:var(--surface);color:var(--text)}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.5rem}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 8px;text-align:center}
+.stat-n{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.stat-l{font-size:11px;color:var(--muted);margin-top:1px}
+
+/* category filter */
+.cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem}
+.cat{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;transition:all .15s}
+.cat:hover:not(:disabled){border-color:var(--border2);color:var(--text)}
+.cat.on{background:var(--blue-dim);border-color:var(--blue);color:var(--blue-text)}
+.cat:disabled{opacity:.3;cursor:not-allowed}
+.cat-cnt{font-size:10px;opacity:.7}
+
+/* progress */
+.prog-track{height:3px;background:var(--surface2);border-radius:2px;margin-bottom:1.25rem;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--blue),#7CB9FF);border-radius:2px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+
+/* question card */
+.qcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1.375rem;margin-bottom:1rem}
+.qmeta{display:flex;gap:6px;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;font-weight:500;border:1px solid transparent}
+.b-blue{background:var(--blue-dim);color:var(--blue-text);border-color:rgba(79,142,247,.3)}
+.b-purple{background:var(--purple-dim);color:var(--purple-text);border-color:rgba(192,132,252,.3)}
+.b-amber{background:var(--amber-dim);color:var(--amber-text);border-color:rgba(227,179,65,.3)}
+.b-red{background:var(--red-dim);color:var(--red-text);border-color:rgba(248,81,73,.3)}
+.b-green{background:var(--green-dim);color:var(--green-text);border-color:rgba(52,208,88,.3)}
+.b-teal{background:var(--teal-dim);color:#6EE7A0;border-color:rgba(57,211,83,.3)}
+.b-coral{background:#2E100A;color:#FFA07A;border-color:rgba(255,100,50,.3)}
+.qnum{font-size:12px;color:var(--hint);margin-left:auto;font-variant-numeric:tabular-nums}
+.qtxt{font-size:15px;line-height:1.75;margin-bottom:1.125rem;color:var(--text)}
+
+/* options — signature animation */
+.opts{display:flex;flex-direction:column;gap:8px;margin-bottom:1.125rem}
+.opt{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:11px 13px;
+  border-radius:var(--r);
+  border:1px solid var(--border);
+  border-left:3px solid transparent;
+  cursor:pointer;
+  background:var(--surface2);
+  transition:border-color .15s, background .15s;
+  position:relative;overflow:hidden;
+}
+.opt:hover:not(.dis){border-color:var(--border2);border-left-color:var(--blue);background:#252942}
+.opt.ok{background:var(--green-dim);border-color:rgba(52,208,88,.4);border-left-color:var(--green);animation:slideIn .25s ease}
+.opt.ng{background:var(--red-dim);border-color:rgba(248,81,73,.4);border-left-color:var(--red);animation:slideIn .25s ease}
+.opt.show-ok{background:var(--green-dim);border-color:rgba(52,208,88,.4);border-left-color:var(--green)}
 .opt.dis{cursor:default}
-.opt-k{width:22px;height:22px;border-radius:50%;background:#f6f8fa;border:1px solid #d0d7de;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#555;flex-shrink:0;margin-top:1px}
-.opt.ok .opt-k,.opt.show-ok .opt-k{background:#2da44e;color:#fff;border-color:#2da44e}
-.opt.ng .opt-k{background:#cf222e;color:#fff;border-color:#cf222e}
-.opt-t{font-size:13.5px;line-height:1.6}
-.exp-block{display:none;margin-top:2px}
-.exp-block.show{display:block}
-.exp-why{background:#ddf4ff;border-radius:8px;padding:12px 14px;margin-bottom:8px}
-.exp-why-lbl{font-size:11px;font-weight:600;color:#0550ae;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
-.exp-why-txt{font-size:13px;color:#0a3069;line-height:1.7}
-.exp-trap{background:#fff8c5;border-radius:8px;padding:12px 14px;margin-bottom:8px}
-.exp-trap-lbl{font-size:11px;font-weight:600;color:#7d4e00;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
-.exp-trap-txt{font-size:13px;color:#4b2f00;line-height:1.7}
-/* FIX 1: cmp列名を feature に合わせてヘッダー修正 */
-.cmp-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:8px}
-.cmp-tbl th{background:#f6f8fa;padding:7px 10px;text-align:left;font-weight:600;color:#555;border-bottom:1px solid #e1e4e8;white-space:nowrap}
-.cmp-tbl td{padding:7px 10px;border-bottom:1px solid #e1e4e8;color:#1a1a1a;vertical-align:top}
+@keyframes slideIn{from{transform:translateX(-4px);opacity:.7}to{transform:translateX(0);opacity:1}}
+.opt-k{width:24px;height:24px;border-radius:50%;background:var(--bg);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--muted);flex-shrink:0;margin-top:1px;transition:all .2s}
+.opt.ok .opt-k{background:var(--green);color:#000;border-color:var(--green)}
+.opt.show-ok .opt-k{background:var(--green);color:#000;border-color:var(--green)}
+.opt.ng .opt-k{background:var(--red);color:#fff;border-color:var(--red)}
+.opt-t{font-size:13.5px;line-height:1.6;color:var(--text)}
+
+/* explanation */
+.exp{display:none;margin-bottom:1rem}
+.exp.show{display:block}
+.exp-why{background:var(--blue-dim);border:1px solid rgba(79,142,247,.2);border-radius:var(--r);padding:12px 14px;margin-bottom:8px}
+.exp-lbl{font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;margin-bottom:5px}
+.exp-lbl.lbl-why{color:var(--blue-text)}
+.exp-lbl.lbl-trap{color:var(--amber-text)}
+.exp-txt{font-size:13px;line-height:1.7}
+.exp-txt.txt-why{color:#B3D4FC}
+.exp-trap{background:var(--amber-dim);border:1px solid rgba(227,179,65,.2);border-radius:var(--r);padding:12px 14px;margin-bottom:8px}
+.exp-txt.txt-trap{color:#E8D08A}
+.cmp-wrap{overflow-x:auto;margin-bottom:8px}
+.cmp-tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:440px}
+.cmp-tbl th{background:var(--bg);padding:7px 10px;text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)}
+.cmp-tbl td{padding:7px 10px;border-bottom:1px solid var(--border);line-height:1.5;color:var(--text)}
 .cmp-tbl tr:last-child td{border-bottom:none}
-.cmp-tbl .hl{background:#ddf4ff;color:#0550ae;font-weight:600}
-.keywords{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
-.kw{font-size:11px;padding:2px 7px;border-radius:6px;background:#f6f8fa;color:#555;border:1px solid #e1e4e8}
+.cmp-tbl .rec td{background:rgba(52,208,88,.07);color:var(--green-text)}
+.kws{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.kw{font-size:11px;padding:2px 8px;border-radius:6px;background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
+
+/* actions */
 .actions{display:flex;gap:8px;justify-content:space-between;align-items:center}
-.btn{padding:7px 14px;border-radius:8px;border:1px solid #d0d7de;background:#fff;color:#1a1a1a;font-size:13px;cursor:pointer;transition:all .15s}
-.btn:hover{background:#f3f4f6}
-.btn-p{background:#0969da;color:#fff;border-color:#0969da}
-.btn-p:hover{background:#0860ca}
-.btn-ghost{border-color:transparent;background:transparent;color:#666;font-size:12px}
-.btn-ghost:hover{color:#1a1a1a;background:#f3f4f6}
-.streak{font-size:12px;color:#7d4e00;background:#fff8c5;padding:3px 9px;border-radius:6px;border:1px solid #f0c000}
-.result-wrap{text-align:center;padding:2.5rem 1rem}
-.result-sc{font-size:52px;font-weight:700}
-.result-sub{font-size:13px;color:#666;margin-top:4px}
-.result-msg{font-size:15px;margin:1rem auto;max-width:360px;line-height:1.6;color:#333}
-.domain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:1.25rem;text-align:left}
-.domain-card{background:#f6f8fa;border-radius:8px;padding:10px 12px;border:1px solid #e1e4e8}
+.btn-p{display:inline-flex;align-items:center;gap:5px;padding:8px 16px;border-radius:var(--r);background:var(--blue);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s}
+.btn-p:hover{background:#3A7AE8}
+.streak{font-size:12px;background:var(--amber-dim);color:var(--amber-text);border:1px solid rgba(227,179,65,.3);padding:3px 10px;border-radius:6px}
+
+/* result */
+.result{display:none;text-align:center;padding:3rem 1rem 2rem}
+.result.show{display:block}
+.result-ring{width:100px;height:100px;border-radius:50%;border:3px solid var(--border);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;position:relative}
+.result-ring svg{position:absolute;top:-3px;left:-3px;transform:rotate(-90deg)}
+.result-sc{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums}
+.result-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.result-msg{font-size:15px;color:var(--text);margin:1rem auto;max-width:360px;line-height:1.6}
+.domain-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:1.25rem 0;text-align:left}
+.domain-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px}
 .domain-name{font-size:12px;font-weight:600;margin-bottom:4px}
-.domain-bar-bg{height:5px;background:#e1e4e8;border-radius:3px;overflow:hidden}
-.domain-bar-fill{height:100%;border-radius:3px;background:#0969da;transition:width .5s}
-.domain-rate{font-size:11px;color:#666;margin-top:3px}
+.domain-bar{height:4px;background:var(--bg);border-radius:2px;overflow:hidden;margin-bottom:3px}
+.domain-bar-fill{height:100%;background:var(--blue);border-radius:2px;transition:width .6s .2s}
+.domain-rate{font-size:11px;color:var(--muted)}
+.result-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:1.5rem}
+
+/* mobile bottom nav */
+@media(max-width:540px){
+  .wrap{padding:1rem .875rem 5rem}
+  .hdr-left h1{font-size:16px}
+  .stats{grid-template-columns:repeat(4,1fr);gap:5px}
+  .stat{padding:8px 4px}
+  .stat-n{font-size:18px}
+  .stat-l{font-size:10px}
+  .qtxt{font-size:14px}
+  .opt-t{font-size:13px}
+  .qcard{padding:1rem}
+}
 </style>
 </head>
 <body>
-<div class="app">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-    <h1><i class="ti ti-certificate" style="font-size:18px;vertical-align:-2px;margin-right:7px;color:#0969da"></i>AWS SAP-C02 深掘り演習</h1>
-    <button class="btn btn-ghost" onclick="restart()"><i class="ti ti-refresh" style="font-size:14px;vertical-align:-1px;margin-right:3px"></i>リセット</button>
-  </div>
-  <p class="subtitle">1問ごとに「なぜ？」まで理解する試験対策</p>
-
-  <div class="stats-row">
-    <div class="stat"><div class="stat-n" id="sTotal">0</div><div class="stat-l">回答済み</div></div>
-    <div class="stat"><div class="stat-n" id="sOk" style="color:#116329">0</div><div class="stat-l">正解</div></div>
-    <div class="stat"><div class="stat-n" id="sNg" style="color:#a40e26">0</div><div class="stat-l">不正解</div></div>
-    <div class="stat"><div class="stat-n" id="sRate">—</div><div class="stat-l">正答率</div></div>
+<div class="wrap">
+  <div class="hdr">
+    <div class="hdr-left">
+      <h1><i class="ti ti-certificate" style="color:var(--blue);font-size:20px"></i>SAP-C02 演習</h1>
+      <p>1問ごとに「なぜ？」まで理解する</p>
+    </div>
+    <div class="hdr-right">
+      <a href="study.html" class="btn-study"><i class="ti ti-book" style="font-size:14px"></i>参考書</a>
+      <button class="btn-ghost" onclick="restart()"><i class="ti ti-refresh" style="font-size:14px"></i></button>
+    </div>
   </div>
 
-  <div class="cat-row" id="catRow"></div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n" id="sTotal">0</div><div class="stat-l">回答済</div></div>
+    <div class="stat"><div class="stat-n" id="sOk" style="color:var(--green)">0</div><div class="stat-l">正解</div></div>
+    <div class="stat"><div class="stat-n" id="sNg" style="color:var(--red)">0</div><div class="stat-l">不正解</div></div>
+    <div class="stat"><div class="stat-n" id="sRate" style="color:var(--blue)">—</div><div class="stat-l">正答率</div></div>
+  </div>
 
-  <div id="quizArea">
-    <div class="prog-bar"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
-    <div class="qcard" id="qCard">
-      <div class="qmeta">
-        <span class="badge b-blue" id="qCat">—</span>
-        <span class="badge b-red" id="qDiff">—</span>
-        <span class="badge b-purple" id="qDomain">—</span>
-        <span class="qnum" id="qNum">— / —</span>
+  <div class="cats" id="catRow"></div>
+
+  <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+
+  <div class="qcard" id="qCard">
+    <div class="qmeta">
+      <span class="badge b-blue" id="qCat">—</span>
+      <span class="badge" id="qDiff">—</span>
+      <span class="badge b-purple" id="qDomain">—</span>
+      <span class="qnum" id="qNum">— / —</span>
+    </div>
+    <p class="qtxt" id="qTxt"></p>
+    <div class="opts" id="opts"></div>
+    <div class="exp" id="exp">
+      <div class="exp-why">
+        <div class="exp-lbl lbl-why"><i class="ti ti-bulb" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i>正解の理由</div>
+        <div class="exp-txt txt-why" id="expWhy"></div>
       </div>
-      <p class="qtxt" id="qTxt"></p>
-      <div class="opts" id="opts"></div>
-      <div class="exp-block" id="expBlock">
-        <div class="exp-why">
-          <div class="exp-why-lbl"><i class="ti ti-bulb" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i>正解の理由</div>
-          <div class="exp-why-txt" id="expWhy"></div>
-        </div>
-        <div class="exp-trap">
-          <div class="exp-trap-lbl"><i class="ti ti-alert-triangle" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i>よくある落とし穴</div>
-          <div class="exp-trap-txt" id="expTrap"></div>
-        </div>
-        <div id="cmpWrap"></div>
-        <div class="keywords" id="kwWrap"></div>
+      <div class="exp-trap">
+        <div class="exp-lbl lbl-trap"><i class="ti ti-alert-triangle" style="font-size:12px;vertical-align:-1px;margin-right:3px"></i>落とし穴</div>
+        <div class="exp-txt txt-trap" id="expTrap"></div>
       </div>
-      <div class="actions">
-        <button class="btn btn-ghost" onclick="skipQ()"><i class="ti ti-chevron-right" style="font-size:14px;vertical-align:-1px;margin-right:2px"></i>スキップ</button>
-        <div style="display:flex;gap:8px;align-items:center">
-          <span id="streakBadge"></span>
-          <button class="btn btn-p" id="nextBtn" style="display:none" onclick="nextQ()">次の問題 →</button>
-        </div>
+      <div id="cmpWrap"></div>
+      <div class="kws" id="kwWrap"></div>
+    </div>
+    <div class="actions">
+      <button class="btn-ghost" style="font-size:12px" onclick="skipQ()"><i class="ti ti-chevron-right" style="font-size:14px;vertical-align:-1px"></i>スキップ</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span id="streakBadge"></span>
+        <button class="btn-p" id="nextBtn" style="display:none" onclick="nextQ()">次の問題 <i class="ti ti-arrow-right" style="font-size:14px;vertical-align:-1px"></i></button>
       </div>
     </div>
-    <div id="resultWrap" style="display:none"></div>
+  </div>
+
+  <div class="result" id="result">
+    <div class="result-ring">
+      <svg width="106" height="106" viewBox="0 0 106 106">
+        <circle cx="53" cy="53" r="50" fill="none" stroke="#2D3149" stroke-width="3"/>
+        <circle id="resultArc" cx="53" cy="53" r="50" fill="none" stroke="#4F8EF7" stroke-width="3" stroke-linecap="round" stroke-dasharray="0 314"/>
+      </svg>
+      <div>
+        <div class="result-sc" id="resultSc">0/0</div>
+        <div class="result-sub" id="resultRate">0%</div>
+      </div>
+    </div>
+    <div class="result-msg" id="resultMsg"></div>
+    <div class="domain-grid" id="domainGrid"></div>
+    <div class="result-btns">
+      <button class="btn-p" onclick="restart()"><i class="ti ti-refresh" style="font-size:14px;vertical-align:-1px;margin-right:4px"></i>もう一度挑戦</button>
+    </div>
   </div>
 </div>
 
 <script>
-// FIX 1: cmpのフィールド名を feature に統一（rpo→feature）
-const QS = [
-  {
-    domain:"設計", cat:"HA / DR", diff:"難",
-    q:"金融系SaaSでRPO=0、RTO<30秒を求められた。最も費用対効果の高い構成は？",
-    opts:["S3 Cross-Region Replication + CloudFront","Aurora Global Database + Route 53 ARC","DynamoDB Global Tables + Lambda@Edge","RDS Multi-AZ + Read Replica + Route 53フェイルオーバー"],
-    ans:1,
-    why:"Aurora Global Databaseはレプリケーション遅延1秒未満(RPO≈0)、フェイルオーバー1分未満(RTO<1分)を実現。Route 53 ARCはフェイルオーバーの安全なオーケストレーションを提供し、誤操作リスクを排除できます。",
-    trap:"RDS Multi-AZは同一リージョン内のフェイルオーバーのみ。リージョン障害には対応不可。DynamoDB Global TablesはDBレイヤーには適するが、アプリ全体のフェイルオーバーには別途設計が必要。",
-    cmp:[
-      {svc:"Aurora Global DB", feature:"RPO < 1秒", rto:"< 1分",   cost:"中",    note:"✓ 推奨"},
-      {svc:"RDS Multi-AZ",     feature:"RPO 数秒",  rto:"1〜2分", cost:"低",    note:"単一リージョンのみ"},
-      {svc:"Multi-Site Active",feature:"RPO 0",     rto:"秒以下", cost:"高",    note:"最高コスト"},
-    ],
-    kws:["Aurora Global","Route 53 ARC","RPO/RTO","リージョン障害","フェイルオーバー"]
-  },
-  {
-    domain:"セキュリティ", cat:"IAM / SCP", diff:"難",
-    q:"Organizationsの全アカウントでS3バケットのパブリック公開を禁止しつつ、セキュリティ監査アカウントのみ例外を許可したい。最適な構成は？",
-    opts:["全OUにSCPで拒否 + 監査アカウントのIAMポリシーで許可","監査アカウントを別OUに移動し、そのOU以外にSCPで拒否","各アカウントのS3ブロックパブリックアクセスを手動設定","Config RulesとSSM AutomationでNon-compliantを自動修復"],
-    ans:1,
-    why:"SCPはOU単位で管理が可能。監査アカウントを別OUに分離し、制限SCPを適用しないことで例外を実現。SCPとIAMの組み合わせでは「明示的Deny > Allow」のためSCPで拒否すると監査OUのIAM許可も上書きされてしまいます。",
-    trap:"選択肢Aの誤り: SCPの明示的DenyはIAMポリシーのAllowを上書きする。Configは検出・修復であり予防的コントロールではない。",
-    cmp:[
-      {svc:"SCP",          feature:"予防的・即時強制", rto:"即時",       cost:"無料", note:"Denyは最強"},
-      {svc:"IAM Policy",   feature:"アカウント内のみ", rto:"アカウント内", cost:"無料", note:"SCPで上書き可"},
-      {svc:"Config Rules", feature:"検出・修復",       rto:"修復に時間",  cost:"有料", note:"予防不可"},
-    ],
-    kws:["SCP","Organizations","明示的Deny","OU分離","予防的コントロール"]
-  },
-  {
-    domain:"ネットワーク", cat:"接続設計", diff:"普通",
-    q:"オンプレミスとAWSを専用線で接続し、将来的に10以上のVPCを追加予定。Direct Connectの接続方式として最もスケーラブルな選択は？",
-    opts:["各VPCに個別のPrivate VIFを作成","Direct Connect Gateway + Transit Gateway","VPN CloudHub構成","Direct Connect + VPCピアリングのフルメッシュ"],
-    ans:1,
-    why:"Direct Connect Gatewayは1つのDX接続から最大10リージョンのVPCへ接続可能。Transit Gatewayと組み合わせるとハブ&スポーク型で数百VPCまでスケール。",
-    trap:"Private VIF方式はVPCごとに個別設定が必要で、10VPC以上では管理が煩雑。フルメッシュVPCピアリングはn*(n-1)/2の接続数が必要で推移的ルーティング不可。",
-    cmp:[
-      {svc:"Private VIF",   feature:"1 VIF = 1 VPC",  rto:"拡張性: 低", cost:"低", note:"小規模のみ"},
-      {svc:"DX GW + TGW",   feature:"1接続→数百VPC", rto:"拡張性: 高", cost:"中", note:"✓ 推奨"},
-      {svc:"VPCピアリング", feature:"推移的ルーティング不可", rto:"拡張性: 低", cost:"低", note:"フルメッシュ"},
-    ],
-    kws:["Direct Connect Gateway","Transit Gateway","VIF","ハブ&スポーク","スケーラビリティ"]
-  },
-  {
-    domain:"コスト", cat:"コスト最適化", diff:"普通",
-    q:"本番環境(24時間稼働)・ステージング(平日9-18時のみ)・バッチ処理(中断可)の3種EC2ワークロードに最適な購入オプションの組み合わせは？",
-    opts:["全てOn-Demand","本番:Reserved / ステージング:On-Demand / バッチ:Spot","本番:Dedicated Host / ステージング:Reserved / バッチ:On-Demand","本番:Savings Plans / ステージング:Reserved / バッチ:On-Demand"],
-    ans:1,
-    why:"本番(24h稼働)はReserved Instancesで最大72%割引。ステージング(稼働率≈40%)はスケジュール起動+On-Demandが経済的。バッチ(中断可)はSpot Instancesで最大90%割引。",
-    trap:"Dedicated Hostは物理ホスト占有が必要なライセンス持込み(BYOL)用途向けで、コスト最適化が目的では非推奨。",
-    cmp:[
-      {svc:"Reserved (1yr)", feature:"最大72%割引",  rto:"1年コミット",   cost:"低",   note:"24h稼働向け"},
-      {svc:"Spot",           feature:"最大90%割引",  rto:"中断リスクあり", cost:"最低", note:"耐障害バッチ向け"},
-      {svc:"Savings Plans",  feature:"最大66%割引",  rto:"柔軟",          cost:"低〜中", note:"ファミリー変更可"},
-    ],
-    kws:["Reserved Instances","Spot Instance","Savings Plans","稼働率","コミットメント"]
-  },
-  {
-    domain:"移行", cat:"Migration", diff:"普通",
-    q:"オンプレMySQLデータベース(10TB)を最小ダウンタイムでAurora MySQLへ移行したい。最適な戦略は？",
-    opts:["mysqldumpで全データをエクスポートしてインポート","AWS DMS継続レプリケーション + フェイルオーバーカットオーバー","AWS SCT + DMSフルロード","Snowballで物理転送後にDMS差分適用"],
-    ans:1,
-    why:"DMS継続レプリケーション(CDC)はソースDBを稼働させたまま差分データを継続同期。カットオーバー時のダウンタイムを数分に抑えられます。",
-    trap:"mysqldumpはダウンタイムが数時間〜数日になり本番では非現実的。SCT+フルロードのみでは差分が取れないため長時間のダウンタイムが発生。",
-    cmp:[
-      {svc:"DMS CDC",   feature:"ダウンタイム: 分単位", rto:"複雑度: 中", cost:"中", note:"✓ 推奨"},
-      {svc:"mysqldump", feature:"ダウンタイム: 時間〜日", rto:"複雑度: 低", cost:"低", note:"小規模のみ"},
-      {svc:"Snowball+DMS", feature:"超低帯域向け", rto:"複雑度: 高", cost:"高", note:"特殊ケース"},
-    ],
-    kws:["DMS","CDC","継続レプリケーション","カットオーバー","最小ダウンタイム"]
-  },
-  {
-    domain:"コンテナ", cat:"コンテナ/サーバーレス", diff:"普通",
-    q:"マイクロサービスで、サービスAがサービスBの処理完了を待たずに非同期で処理継続したい。疎結合な設計として最適なのは？",
-    opts:["ALB + ECS間の同期HTTP呼び出し","Amazon SQS + Lambda / ECSコンシューマー","API Gateway + Lambda同期呼び出し","Step Functions + 同期Express Workflow"],
-    ans:1,
-    why:"SQSはプロデューサー/コンシューマーを完全に分離。サービスAはメッセージをキューに送信後すぐに次の処理へ進めます。障害時はDLQでメッセージ保護。",
-    trap:"同期HTTP呼び出しはサービスB障害がサービスAに波及し、疎結合ではない。Step Functions同期Expressは呼び出し元がブロックされるため非同期処理には不適切。",
-    cmp:[
-      {svc:"SQS",         feature:"非同期・疎結合",    rto:"At-least-once", cost:"低", note:"✓ 推奨"},
-      {svc:"SNS",         feature:"非同期・ファンアウト", rto:"At-least-once", cost:"低", note:"複数サブスクライバ向け"},
-      {svc:"EventBridge", feature:"イベント駆動",       rto:"複雑なルーティング", cost:"低", note:"複雑なイベントに"},
-    ],
-    kws:["SQS","疎結合","非同期","DLQ","マイクロサービス"]
-  },
-  {
-    domain:"データ", cat:"データ設計", diff:"難",
-    q:"1日1TBのログデータをほぼリアルタイムに分析し、Athenaでアドホッククエリも実行したい。最適なアーキテクチャは？",
-    opts:["Kinesis Data Streams → Lambda → RDS","Kinesis Data Firehose → S3 (Parquet変換) → Athena + Glue Data Catalog","Kinesis Data Streams → Redshift Streaming Ingestion","SQS → Lambda → Aurora"],
-    ans:1,
-    why:"Firehoseは自動的にParquetへ変換しS3に配置。Glue CatalogはS3のスキーマを管理し、AthenaがSQL on S3を実現。サーバーレスでスケール・コストともに優秀。",
-    trap:"RDS/Auroraは分析ワークロード向きではなく、1TB/日の書き込みにスケールしない。RedshiftはアドホックS3クエリのみならAthenaの方がコスト効率が高い。",
-    cmp:[
-      {svc:"Firehose+Athena",   feature:"準RT・サーバーレス", rto:"シンプル", cost:"低",   note:"✓ 推奨"},
-      {svc:"Kinesis+Redshift",  feature:"RT・高スループット",  rto:"中",       cost:"中〜高", note:"複雑な分析向け"},
-      {svc:"MSK+EMR",           feature:"RT・大規模変換",      rto:"高",       cost:"高",   note:"大規模ETL向け"},
-    ],
-    kws:["Kinesis Firehose","Athena","Parquet","Glue Data Catalog","サーバーレス分析"]
-  },
-  {
-    domain:"設計", cat:"スケーラビリティ", diff:"普通",
-    q:"EC2ベースのWebアプリで急激なトラフィックスパイク(平均100倍)に対応したい。コスト最適かつ高速スケールな構成は？",
-    opts:["EC2 Auto Scaling (ステップスケーリング) のみ","CloudFront + ALB + EC2 Auto Scaling (ターゲット追跡) + ElastiCache","EC2を常時大量台数起動","RDS Multi-AZ + Read Replicaのみ増やす"],
-    ans:1,
-    why:"CloudFrontでエッジキャッシュにより오리オリジンへの負荷を大幅削減。ElastiCacheでDBクエリをキャッシュ。ターゲット追跡スケーリングはCPU/リクエスト数に基づき自動調整。3層でスパイクを吸収。",
-    trap:"Auto Scalingのみでは起動に3〜5分かかり急激スパイクに間に合わない。常時大量台数はコスト非効率。",
-    cmp:[
-      {svc:"CloudFront",    feature:"エッジキャッシュ", rto:"即時",   cost:"低",  note:"オリジン負荷削減"},
-      {svc:"ElastiCache",   feature:"DBキャッシュ",     rto:"マイクロ秒", cost:"中", note:"DBスパイク吸収"},
-      {svc:"Auto Scaling",  feature:"EC2追加",          rto:"3〜5分",    cost:"変動", note:"根本スケール"},
-    ],
-    kws:["CloudFront","ElastiCache","ターゲット追跡","Auto Scaling","キャッシュ戦略"]
-  },
-  {
-    domain:"監視", cat:"監視 / 運用", diff:"普通",
-    q:"マルチアカウント(50アカウント)の全CloudTrailログを集中管理し、特定APIコール(S3:DeleteBucket等)を即座にアラートしたい。最適構成は？",
-    opts:["各アカウントにCloudWatch Alarmsを個別設定","Organizations Trail → S3集約 + EventBridge (Cross-account) → SNS","CloudTrailを各アカウントのCloudWatch Logsに送信しメトリクスフィルタ","Security Hub + Config Rulesで監視"],
-    ans:1,
-    why:"Organizations Trailは1設定で全アカウントのログをS3に集約。EventBridgeはCloudTrailイベントをリアルタイムにキャプチャし、ルールでS3:DeleteBucket等をフィルタリングしてSNSに即座に通知できます。",
-    trap:"各アカウント個別設定は50アカウントでは非現実的。Security Hubは検出・統合的可視化向けで即時アラートには別途設定が必要。",
-    cmp:[
-      {svc:"Organizations Trail", feature:"1設定で全アカウント", rto:"即時",      cost:"低",  note:"✓ 推奨"},
-      {svc:"個別設定",            feature:"アカウントごと",     rto:"管理コスト大", cost:"中", note:"50+では非現実的"},
-      {svc:"Security Hub",        feature:"統合可視化",         rto:"検出向き",   cost:"有料", note:"即時アラート別途要"},
-    ],
-    kws:["Organizations Trail","EventBridge","クロスアカウント","集中ログ管理","リアルタイムアラート"]
-  },
-  {
-    domain:"セキュリティ", cat:"暗号化 / KMS", diff:"難",
-    q:"FIPS 140-2 Level 3準拠のHSMが必要な金融規制要件と、既存アプリからの透過的な暗号化処理を両立したい。最適なアーキテクチャは？",
-    opts:["AWS KMS (マネージド)","AWS CloudHSM + KMSカスタムキーストア","AWS CloudHSM単体","Client-side encryption + S3 SSE-KMS"],
-    ans:1,
-    why:"CloudHSMはFIPS 140-2 Level 3認定の専有ハードウェアを提供。KMSカスタムキーストアと統合することで、既存のKMS APIを変更なく利用しつつHSMでキー管理を行えます。",
-    trap:"AWS KMS標準はFIPS 140-2 Level 2(一部Level 3)で、Level 3が必須の場合は不十分。CloudHSM単体ではKMS APIが使えず既存アプリの変更が大きい。",
-    cmp:[
-      {svc:"KMS (標準)",     feature:"FIPS L2〜L3",  rto:"フルマネージド", cost:"低",  note:"通常用途"},
-      {svc:"CloudHSM+KMS",  feature:"FIPS L3",      rto:"専有HSM",       cost:"高",  note:"✓ 金融規制向け"},
-      {svc:"CloudHSM単体",  feature:"FIPS L3",      rto:"専有HSM",       cost:"高",  note:"KMS API利用不可"},
-    ],
-    kws:["CloudHSM","KMSカスタムキーストア","FIPS 140-2","専有ハードウェア","透過的暗号化"]
-  },
-  {
-    domain:"移行", cat:"Migration", diff:"難",
-    q:"オンプレの大規模Hadoopクラスタ(毎日5TB処理)をAWSへ移行。既存のHive/SparkジョブをできるだけそのままAWSで実行したい。最適なサービスは？",
-    opts:["AWS Glue (サーバーレスSpark)","Amazon EMR (EC2またはEKS上)","Amazon Athena","AWS Batch + Fargate"],
-    ans:1,
-    why:"EMRはHadoop/Spark/Hiveを完全サポートし、既存ジョブをほぼそのまま移植可能。EMR on EKSはKubernetes上でSparkを実行でき、EC2 Spot活用でコスト削減も実現。",
-    trap:"AWS Glueは変換ジョブ向けサーバーレスSparkだが、複雑なHadoopエコシステムの移植には制約がある。AthenaはS3上のSQLクエリのみでバッチ処理パイプラインには不向き。",
-    cmp:[
-      {svc:"EMR",   feature:"Hadoop/Spark互換", rto:"フル制御",    cost:"中〜高", note:"✓ 移植性最高"},
-      {svc:"Glue",  feature:"サーバーレスSpark", rto:"サーバーレス", cost:"中",    note:"シンプルETL向け"},
-      {svc:"Athena",feature:"SQL on S3",        rto:"サーバーレス", cost:"低",    note:"クエリのみ"},
-    ],
-    kws:["EMR","Hadoop互換","Spark","Hive","リフト&シフト"]
-  },
-  {
-    domain:"データ", cat:"データ設計", diff:"普通",
-    q:"IoTデバイス10万台からのセンサーデータ(秒間50万レコード)をリアルタイムに取り込み、異常検知Lambdaで処理したい。最適な取り込みサービスは？",
-    opts:["SQS Standard Queue → Lambda","Kinesis Data Streams → Lambda (拡張ファンアウト)","SNS → SQS → Lambda","API Gateway → Lambda直接呼び出し"],
-    ans:1,
-    why:"Kinesis Data Streamsはシャード単位でスループットを線形スケール。拡張ファンアウトで複数Lambdaコンシューマーが独立した帯域で並列処理可能。秒間50万レコードには50シャード程度で対応できます。",
-    trap:"SQSはFIFO Queueでも300 TPS/秒程度で、秒間50万レコードには対応困難。API Gatewayのバーストリミット(10,000 req/s)でも不足。",
-    cmp:[
-      {svc:"Kinesis DS", feature:"数MB/s〜GB/s",  rto:"シャード拡張", cost:"中", note:"✓ 推奨"},
-      {svc:"SQS",        feature:"数千〜数万 msg/s", rto:"スケーラブル", cost:"低", note:"高スループット制約"},
-      {svc:"MSK (Kafka)",feature:"数GB/s",          rto:"大規模",       cost:"高", note:"超大規模IoT向け"},
-    ],
-    kws:["Kinesis Data Streams","拡張ファンアウト","シャード","IoT","高スループット"]
-  }
+const DOMAIN_COLORS={設計:"b-blue",セキュリティ:"b-red",ネットワーク:"b-teal",コスト:"b-green",移行:"b-amber",コンテナ:"b-purple",データ:"b-coral",監視:"b-blue"};
+const DIFF_COLORS={難:"b-red",普通:"b-amber",易:"b-green"};
+const DOMAINS=["全て","設計","セキュリティ","ネットワーク","コスト","移行","コンテナ","データ","監視"];
+
+const QS=[
+  {domain:"設計",cat:"HA / DR",diff:"難",q:"金融系SaaSでRPO=0、RTO<30秒を求められた。最も費用対効果の高い構成は？",opts:["S3 Cross-Region Replication + CloudFront","Aurora Global Database + Route 53 ARC","DynamoDB Global Tables + Lambda@Edge","RDS Multi-AZ + Read Replica + Route 53フェイルオーバー"],ans:1,why:"Aurora Global Databaseはレプリケーション遅延1秒未満(RPO≈0)、フェイルオーバー1分未満(RTO<1分)を実現。Route 53 ARCはフェイルオーバーの安全なオーケストレーションを提供し、誤操作リスクを排除できます。",trap:"RDS Multi-AZは同一リージョン内のフェイルオーバーのみ。リージョン障害には対応不可。DynamoDB Global TablesはDBレイヤーには適するが、アプリ全体のフェイルオーバーには別途設計が必要。",cmp:[{svc:"Aurora Global DB",feature:"RPO < 1秒",rto:"< 1分",cost:"中",note:"✓ 推奨"},{svc:"RDS Multi-AZ",feature:"RPO 数秒",rto:"1〜2分",cost:"低",note:"単一リージョンのみ"},{svc:"Multi-Site Active",feature:"RPO 0",rto:"秒以下",cost:"高",note:"最高コスト"}],kws:["Aurora Global","Route 53 ARC","RPO/RTO","リージョン障害","フェイルオーバー"]},
+  {domain:"セキュリティ",cat:"IAM / SCP",diff:"難",q:"Organizationsの全アカウントでS3バケットのパブリック公開を禁止しつつ、セキュリティ監査アカウントのみ例外を許可したい。最適な構成は？",opts:["全OUにSCPで拒否 + 監査アカウントのIAMポリシーで許可","監査アカウントを別OUに移動し、そのOU以外にSCPで拒否","各アカウントのS3ブロックパブリックアクセスを手動設定","Config RulesとSSM AutomationでNon-compliantを自動修復"],ans:1,why:"SCPはOU単位で管理が可能。監査アカウントを別OUに分離し、制限SCPを適用しないことで例外を実現。SCPとIAMの組み合わせでは「明示的Deny > Allow」のためSCPで拒否すると監査OUのIAM許可も上書きされてしまいます。",trap:"選択肢Aの誤り: SCPの明示的DenyはIAMポリシーのAllowを上書きする。Configは検出・修復であり予防的コントロールではない。",cmp:[{svc:"SCP",feature:"予防的・即時強制",rto:"即時",cost:"無料",note:"Denyは最強"},{svc:"IAM Policy",feature:"アカウント内のみ",rto:"アカウント内",cost:"無料",note:"SCPで上書き可"},{svc:"Config Rules",feature:"検出・修復",rto:"修復に時間",cost:"有料",note:"予防不可"}],kws:["SCP","Organizations","明示的Deny","OU分離","予防的コントロール"]},
+  {domain:"ネットワーク",cat:"接続設計",diff:"普通",q:"オンプレミスとAWSを専用線で接続し、将来的に10以上のVPCを追加予定。Direct Connectの接続方式として最もスケーラブルな選択は？",opts:["各VPCに個別のPrivate VIFを作成","Direct Connect Gateway + Transit Gateway","VPN CloudHub構成","Direct Connect + VPCピアリングのフルメッシュ"],ans:1,why:"Direct Connect Gatewayは1つのDX接続から最大10リージョンのVPCへ接続可能。Transit Gatewayと組み合わせるとハブ&スポーク型で数百VPCまでスケール。",trap:"Private VIF方式はVPCごとに個別設定が必要で、10VPC以上では管理が煩雑。フルメッシュVPCピアリングはn*(n-1)/2の接続数が必要で推移的ルーティング不可。",cmp:[{svc:"Private VIF",feature:"1 VIF = 1 VPC",rto:"拡張性: 低",cost:"低",note:"小規模のみ"},{svc:"DX GW + TGW",feature:"1接続→数百VPC",rto:"拡張性: 高",cost:"中",note:"✓ 推奨"},{svc:"VPCピアリング",feature:"推移的ルーティング不可",rto:"拡張性: 低",cost:"低",note:"フルメッシュ"}],kws:["Direct Connect Gateway","Transit Gateway","VIF","ハブ&スポーク","スケーラビリティ"]},
+  {domain:"コスト",cat:"コスト最適化",diff:"普通",q:"本番環境(24時間稼働)・ステージング(平日9-18時のみ)・バッチ処理(中断可)の3種EC2ワークロードに最適な購入オプションの組み合わせは？",opts:["全てOn-Demand","本番:Reserved / ステージング:On-Demand / バッチ:Spot","本番:Dedicated Host / ステージング:Reserved / バッチ:On-Demand","本番:Savings Plans / ステージング:Reserved / バッチ:On-Demand"],ans:1,why:"本番(24h稼働)はReserved Instancesで最大72%割引。ステージング(稼働率≈40%)はOn-Demandが経済的。バッチ(中断可)はSpot Instancesで最大90%割引。",trap:"Dedicated Hostは物理ホスト占有が必要なライセンス持込み(BYOL)用途向けで、コスト最適化が目的では非推奨。",cmp:[{svc:"Reserved (1yr)",feature:"最大72%割引",rto:"1年コミット",cost:"低",note:"24h稼働向け"},{svc:"Spot",feature:"最大90%割引",rto:"中断リスクあり",cost:"最低",note:"耐障害バッチ向け"},{svc:"Savings Plans",feature:"最大66%割引",rto:"柔軟",cost:"低〜中",note:"ファミリー変更可"}],kws:["Reserved Instances","Spot Instance","Savings Plans","稼働率","コミットメント"]},
+  {domain:"移行",cat:"Migration",diff:"普通",q:"オンプレMySQLデータベース(10TB)を最小ダウンタイムでAurora MySQLへ移行したい。最適な戦略は？",opts:["mysqldumpで全データをエクスポートしてインポート","AWS DMS継続レプリケーション + フェイルオーバーカットオーバー","AWS SCT + DMSフルロード","Snowballで物理転送後にDMS差分適用"],ans:1,why:"DMS継続レプリケーション(CDC)はソースDBを稼働させたまま差分データを継続同期。カットオーバー時のダウンタイムを数分に抑えられます。",trap:"mysqldumpはダウンタイムが数時間〜数日になり本番では非現実的。SCT+フルロードのみでは差分が取れないため長時間のダウンタイムが発生。",cmp:[{svc:"DMS CDC",feature:"ダウンタイム: 分単位",rto:"複雑度: 中",cost:"中",note:"✓ 推奨"},{svc:"mysqldump",feature:"ダウンタイム: 時間〜日",rto:"複雑度: 低",cost:"低",note:"小規模のみ"},{svc:"Snowball+DMS",feature:"超低帯域向け",rto:"複雑度: 高",cost:"高",note:"特殊ケース"}],kws:["DMS","CDC","継続レプリケーション","カットオーバー","最小ダウンタイム"]},
+  {domain:"コンテナ",cat:"コンテナ/サーバーレス",diff:"普通",q:"マイクロサービスで、サービスAがサービスBの処理完了を待たずに非同期で処理継続したい。疎結合な設計として最適なのは？",opts:["ALB + ECS間の同期HTTP呼び出し","Amazon SQS + Lambda / ECSコンシューマー","API Gateway + Lambda同期呼び出し","Step Functions + 同期Express Workflow"],ans:1,why:"SQSはプロデューサー/コンシューマーを完全に分離。サービスAはメッセージをキューに送信後すぐに次の処理へ進めます。障害時はDLQでメッセージ保護。",trap:"同期HTTP呼び出しはサービスB障害がサービスAに波及し、疎結合ではない。Step Functions同期Expressは呼び出し元がブロックされるため非同期処理には不適切。",cmp:[{svc:"SQS",feature:"非同期・疎結合",rto:"At-least-once",cost:"低",note:"✓ 推奨"},{svc:"SNS",feature:"非同期・ファンアウト",rto:"At-least-once",cost:"低",note:"複数サブスクライバ向け"},{svc:"EventBridge",feature:"イベント駆動",rto:"複雑なルーティング",cost:"低",note:"複雑なイベントに"}],kws:["SQS","疎結合","非同期","DLQ","マイクロサービス"]},
+  {domain:"データ",cat:"データ設計",diff:"難",q:"1日1TBのログデータをほぼリアルタイムに分析し、Athenaでアドホッククエリも実行したい。最適なアーキテクチャは？",opts:["Kinesis Data Streams → Lambda → RDS","Kinesis Data Firehose → S3 (Parquet変換) → Athena + Glue Data Catalog","Kinesis Data Streams → Redshift Streaming Ingestion","SQS → Lambda → Aurora"],ans:1,why:"Firehoseは自動的にParquetへ変換しS3に配置。Glue CatalogはS3のスキーマを管理し、AthenaがSQL on S3を実現。サーバーレスでスケール・コストともに優秀。",trap:"RDS/Auroraは分析ワークロード向きではなく、1TB/日の書き込みにスケールしない。RedshiftはアドホックS3クエリのみならAthenaの方がコスト効率が高い。",cmp:[{svc:"Firehose+Athena",feature:"準RT・サーバーレス",rto:"シンプル",cost:"低",note:"✓ 推奨"},{svc:"Kinesis+Redshift",feature:"RT・高スループット",rto:"中",cost:"中〜高",note:"複雑な分析向け"},{svc:"MSK+EMR",feature:"RT・大規模変換",rto:"高",cost:"高",note:"大規模ETL向け"}],kws:["Kinesis Firehose","Athena","Parquet","Glue Data Catalog","サーバーレス分析"]},
+  {domain:"設計",cat:"スケーラビリティ",diff:"普通",q:"EC2ベースのWebアプリで急激なトラフィックスパイク(平均100倍)に対応したい。コスト最適かつ高速スケールな構成は？",opts:["EC2 Auto Scaling (ステップスケーリング) のみ","CloudFront + ALB + EC2 Auto Scaling (ターゲット追跡) + ElastiCache","EC2を常時大量台数起動","RDS Multi-AZ + Read Replicaのみ増やす"],ans:1,why:"CloudFrontでエッジキャッシュによりオリジンへの負荷を大幅削減。ElastiCacheでDBクエリをキャッシュ。ターゲット追跡スケーリングはCPU/リクエスト数に基づき自動調整。",trap:"Auto Scalingのみでは起動に3〜5分かかり急激スパイクに間に合わない。常時大量台数はコスト非効率。",cmp:[{svc:"CloudFront",feature:"エッジキャッシュ",rto:"即時",cost:"低",note:"オリジン負荷削減"},{svc:"ElastiCache",feature:"DBキャッシュ",rto:"マイクロ秒",cost:"中",note:"DBスパイク吸収"},{svc:"Auto Scaling",feature:"EC2追加",rto:"3〜5分",cost:"変動",note:"根本スケール"}],kws:["CloudFront","ElastiCache","ターゲット追跡","Auto Scaling","キャッシュ戦略"]},
+  {domain:"監視",cat:"監視 / 運用",diff:"普通",q:"マルチアカウント(50アカウント)の全CloudTrailログを集中管理し、特定APIコール(S3:DeleteBucket等)を即座にアラートしたい。最適構成は？",opts:["各アカウントにCloudWatch Alarmsを個別設定","Organizations Trail → S3集約 + EventBridge (Cross-account) → SNS","CloudTrailを各アカウントのCloudWatch Logsに送信しメトリクスフィルタ","Security Hub + Config Rulesで監視"],ans:1,why:"Organizations Trailは1設定で全アカウントのログをS3に集約。EventBridgeはCloudTrailイベントをリアルタイムにキャプチャし、ルールでS3:DeleteBucket等をフィルタリングしてSNSに即座に通知できます。",trap:"各アカウント個別設定は50アカウントでは非現実的。Security Hubは検出・統合的可視化向けで即時アラートには別途設定が必要。",cmp:[{svc:"Organizations Trail",feature:"1設定で全アカウント",rto:"即時",cost:"低",note:"✓ 推奨"},{svc:"個別設定",feature:"アカウントごと",rto:"管理コスト大",cost:"中",note:"50+では非現実的"},{svc:"Security Hub",feature:"統合可視化",rto:"検出向き",cost:"有料",note:"即時アラート別途要"}],kws:["Organizations Trail","EventBridge","クロスアカウント","集中ログ管理","リアルタイムアラート"]},
+  {domain:"セキュリティ",cat:"暗号化 / KMS",diff:"難",q:"FIPS 140-2 Level 3準拠のHSMが必要な金融規制要件と、既存アプリからの透過的な暗号化処理を両立したい。最適なアーキテクチャは？",opts:["AWS KMS (マネージド)","AWS CloudHSM + KMSカスタムキーストア","AWS CloudHSM単体","Client-side encryption + S3 SSE-KMS"],ans:1,why:"CloudHSMはFIPS 140-2 Level 3認定の専有ハードウェアを提供。KMSカスタムキーストアと統合することで、既存のKMS APIを変更なく利用しつつHSMでキー管理を行えます。",trap:"AWS KMS標準はFIPS 140-2 Level 2(一部Level 3)で、Level 3が必須の場合は不十分。CloudHSM単体ではKMS APIが使えず既存アプリの変更が大きい。",cmp:[{svc:"KMS (標準)",feature:"FIPS L2〜L3",rto:"フルマネージド",cost:"低",note:"通常用途"},{svc:"CloudHSM+KMS",feature:"FIPS L3",rto:"専有HSM",cost:"高",note:"✓ 金融規制向け"},{svc:"CloudHSM単体",feature:"FIPS L3",rto:"専有HSM",cost:"高",note:"KMS API利用不可"}],kws:["CloudHSM","KMSカスタムキーストア","FIPS 140-2","専有ハードウェア","透過的暗号化"]},
+  {domain:"移行",cat:"Migration",diff:"難",q:"オンプレの大規模Hadoopクラスタ(毎日5TB処理)をAWSへ移行。既存のHive/SparkジョブをできるだけそのままAWSで実行したい。最適なサービスは？",opts:["AWS Glue (サーバーレスSpark)","Amazon EMR (EC2またはEKS上)","Amazon Athena","AWS Batch + Fargate"],ans:1,why:"EMRはHadoop/Spark/Hiveを完全サポートし、既存ジョブをほぼそのまま移植可能。EMR on EKSはKubernetes上でSparkを実行でき、EC2 Spot活用でコスト削減も実現。",trap:"AWS Glueは変換ジョブ向けサーバーレスSparkだが、複雑なHadoopエコシステムの移植には制約がある。AthenaはS3上のSQLクエリのみでバッチ処理パイプラインには不向き。",cmp:[{svc:"EMR",feature:"Hadoop/Spark互換",rto:"フル制御",cost:"中〜高",note:"✓ 移植性最高"},{svc:"Glue",feature:"サーバーレスSpark",rto:"サーバーレス",cost:"中",note:"シンプルETL向け"},{svc:"Athena",feature:"SQL on S3",rto:"サーバーレス",cost:"低",note:"クエリのみ"}],kws:["EMR","Hadoop互換","Spark","Hive","リフト&シフト"]},
+  {domain:"データ",cat:"データ設計",diff:"普通",q:"IoTデバイス10万台からのセンサーデータ(秒間50万レコード)をリアルタイムに取り込み、異常検知Lambdaで処理したい。最適な取り込みサービスは？",opts:["SQS Standard Queue → Lambda","Kinesis Data Streams → Lambda (拡張ファンアウト)","SNS → SQS → Lambda","API Gateway → Lambda直接呼び出し"],ans:1,why:"Kinesis Data Streamsはシャード単位でスループットを線形スケール。拡張ファンアウトで複数Lambdaコンシューマーが独立した帯域で並列処理可能。秒間50万レコードには50シャード程度で対応できます。",trap:"SQSはFIFO Queueでも300 TPS/秒程度で、秒間50万レコードには対応困難。API Gatewayのバーストリミット(10,000 req/s)でも不足。",cmp:[{svc:"Kinesis DS",feature:"数MB/s〜GB/s",rto:"シャード拡張",cost:"中",note:"✓ 推奨"},{svc:"SQS",feature:"数千〜数万 msg/s",rto:"スケーラブル",cost:"低",note:"高スループット制約"},{svc:"MSK (Kafka)",feature:"数GB/s",rto:"大規模",cost:"高",note:"超大規模IoT向け"}],kws:["Kinesis Data Streams","拡張ファンアウト","シャード","IoT","高スループット"]}
 ];
 
-const DOMAINS = ["全て","設計","セキュリティ","ネットワーク","コスト","移行","コンテナ","データ","監視"];
-const DOMAIN_COLORS = {設計:"b-blue",セキュリティ:"b-red",ネットワーク:"b-teal",コスト:"b-green",移行:"b-amber",コンテナ:"b-purple",データ:"b-coral",監視:"b-blue"};
-const DIFF_COLORS = {難:"b-red",普通:"b-amber",易:"b-green"};
+let cur=0,answered=false,total=0,ok=0,ng=0,streak=0,activeDomain="全て",pool=[],domainStats={};
+DOMAINS.slice(1).forEach(d=>{domainStats[d]={ok:0,total:0}});
 
-let cur=0, answered=false, total=0, ok=0, ng=0, streak=0;
-let activeDomain="全て";
-let pool=[], domainStats={};
-DOMAINS.slice(1).forEach(d => { domainStats[d]={ok:0,total:0}; });
-
-function countByDomain(d){ return d==="全て" ? QS.length : QS.filter(q=>q.domain===d).length; }
-
-function buildPool(){
-  pool = QS.filter(q => activeDomain==="全て" || q.domain===activeDomain)
-            .sort(()=>Math.random()-.5);
-  cur = 0;
-}
+function countDomain(d){return d==="全て"?QS.length:QS.filter(q=>q.domain===d).length}
+function buildPool(){pool=QS.filter(q=>activeDomain==="全て"||q.domain===activeDomain).sort(()=>Math.random()-.5);cur=0}
 
 function initCats(){
-  const r = document.getElementById('catRow');
-  DOMAINS.forEach(d => {
-    const cnt = countByDomain(d);
-    const b = document.createElement('button');
-    b.className = 'cat-btn' + (d==="全て" ? ' on' : '');
-    b.disabled = cnt === 0;
-    b.innerHTML = d + (d!=="全て" ? `<span class="cat-count">${cnt}</span>` : '');
-    b.onclick = () => {
-      document.querySelectorAll('.cat-btn').forEach(x => x.classList.remove('on'));
-      b.classList.add('on');
-      activeDomain = d;
-      buildPool();
-      renderQ();
+  const r=document.getElementById('catRow');
+  DOMAINS.forEach(d=>{
+    const cnt=countDomain(d);
+    const b=document.createElement('button');
+    b.className='cat'+(d==="全て"?' on':'');
+    b.disabled=cnt===0;
+    b.innerHTML=d+(d!=="全て"?`<span class="cat-cnt">${cnt}</span>`:'');
+    b.onclick=()=>{
+      document.querySelectorAll('.cat').forEach(x=>x.classList.remove('on'));
+      b.classList.add('on');activeDomain=d;buildPool();renderQ();
     };
     r.appendChild(b);
   });
 }
 
 function renderQ(){
-  document.getElementById('resultWrap').style.display='none';
+  document.getElementById('result').classList.remove('show');
   document.getElementById('qCard').style.display='block';
-  if(cur >= pool.length){ showResult(); return; }
-  const q = pool[cur];
-  answered = false;
-  document.getElementById('qCat').textContent = q.cat;
-  document.getElementById('qDiff').textContent = q.diff;
-  document.getElementById('qDiff').className = 'badge ' + (DIFF_COLORS[q.diff]||'b-amber');
-  document.getElementById('qDomain').textContent = q.domain;
-  document.getElementById('qDomain').className = 'badge ' + (DOMAIN_COLORS[q.domain]||'b-purple');
-  document.getElementById('qNum').textContent = (cur+1) + ' / ' + pool.length;
-  document.getElementById('progFill').style.width = (cur/pool.length*100) + '%';
-  document.getElementById('qTxt').textContent = q.q;
-  const oc = document.getElementById('opts');
-  oc.innerHTML = '';
-  q.opts.forEach((o,i) => {
-    const d = document.createElement('div');
-    d.className = 'opt';
-    d.innerHTML = `<div class="opt-k">${'ABCDE'[i]}</div><div class="opt-t">${o}</div>`;
-    d.onclick = () => selectOpt(i);
-    oc.appendChild(d);
+  if(cur>=pool.length){showResult();return}
+  const q=pool[cur];
+  answered=false;
+  document.getElementById('qCat').textContent=q.cat;
+  document.getElementById('qDiff').textContent=q.diff;
+  document.getElementById('qDiff').className='badge '+(DIFF_COLORS[q.diff]||'b-amber');
+  document.getElementById('qDomain').textContent=q.domain;
+  document.getElementById('qDomain').className='badge '+(DOMAIN_COLORS[q.domain]||'b-purple');
+  document.getElementById('qNum').textContent=(cur+1)+' / '+pool.length;
+  document.getElementById('progFill').style.width=(cur/pool.length*100)+'%';
+  document.getElementById('qTxt').textContent=q.q;
+  const oc=document.getElementById('opts');oc.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const d=document.createElement('div');d.className='opt';
+    d.innerHTML=`<div class="opt-k">${'ABCDE'[i]}</div><div class="opt-t">${o}</div>`;
+    d.onclick=()=>selectOpt(i);oc.appendChild(d);
   });
-  document.getElementById('expBlock').className = 'exp-block';
-  document.getElementById('nextBtn').style.display = 'none';
-  document.getElementById('streakBadge').textContent = '';
+  document.getElementById('exp').className='exp';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('streakBadge').textContent='';
+  document.getElementById('streakBadge').className='';
 }
 
 function selectOpt(i){
-  if(answered) return;
-  answered = true;
-  const q = pool[cur];
-  const opts = document.querySelectorAll('.opt');
-  opts.forEach(o => o.classList.add('dis'));
-  if(i === q.ans){
-    opts[i].classList.add('ok');
-    ok++; streak++;
-    if(domainStats[q.domain]) domainStats[q.domain].ok++;
-  } else {
-    opts[i].classList.add('ng');
-    opts[q.ans].classList.add('show-ok');
-    ng++; streak=0;
-  }
+  if(answered)return;answered=true;
+  const q=pool[cur];
+  document.querySelectorAll('.opt').forEach(o=>o.classList.add('dis'));
+  const opts=document.querySelectorAll('.opt');
+  if(i===q.ans){opts[i].classList.add('ok');ok++;streak++;if(domainStats[q.domain])domainStats[q.domain].ok++}
+  else{opts[i].classList.add('ng');opts[q.ans].classList.add('show-ok');ng++;streak=0}
   total++;
-  if(domainStats[q.domain]) domainStats[q.domain].total++;
+  if(domainStats[q.domain])domainStats[q.domain].total++;
   updateStats();
-  document.getElementById('expWhy').textContent = q.why;
-  document.getElementById('expTrap').textContent = q.trap;
-
-  // FIX 1: featureフィールドに対応したヘッダーで描画
-  const cw = document.getElementById('cmpWrap');
-  if(q.cmp && q.cmp.length){
-    cw.innerHTML = `<div style="overflow-x:auto;margin-bottom:8px"><table class="cmp-tbl">
-      <thead><tr><th>サービス</th><th>特徴・RPO目安</th><th>RTO目安</th><th>コスト</th><th>備考</th></tr></thead>
-      <tbody>` +
-      q.cmp.map((r,ri) => `<tr>
-        <td ${ri===0?'class="hl"':''}>${r.svc}</td>
-        <td>${r.feature}</td>
-        <td>${r.rto}</td>
-        <td>${r.cost}</td>
-        <td>${r.note}</td>
-      </tr>`).join('') +
-      `</tbody></table></div>`;
-  } else { cw.innerHTML=''; }
-
-  document.getElementById('kwWrap').innerHTML = q.kws.map(k =>
-    `<span class="kw"><i class="ti ti-tag" style="font-size:11px;vertical-align:-1px;margin-right:2px"></i>${k}</span>`
-  ).join('');
-  document.getElementById('expBlock').className = 'exp-block show';
-  document.getElementById('nextBtn').style.display = 'inline-flex';
-  if(streak >= 3) {
-    const sb = document.getElementById('streakBadge');
-    sb.className = 'streak';
-    sb.textContent = streak + '連続正解!';
-  }
+  document.getElementById('expWhy').textContent=q.why;
+  document.getElementById('expTrap').textContent=q.trap;
+  const cw=document.getElementById('cmpWrap');
+  if(q.cmp&&q.cmp.length){
+    cw.innerHTML=`<div class="cmp-wrap"><table class="cmp-tbl"><thead><tr><th>サービス</th><th>特徴・RPO目安</th><th>RTO目安</th><th>コスト</th><th>備考</th></tr></thead><tbody>`+
+    q.cmp.map((r,ri)=>`<tr ${ri===0?'class="rec"':''}><td>${r.svc}</td><td>${r.feature}</td><td>${r.rto}</td><td>${r.cost}</td><td>${r.note}</td></tr>`).join('')+
+    `</tbody></table></div>`;
+  }else{cw.innerHTML=''}
+  document.getElementById('kwWrap').innerHTML=q.kws.map(k=>`<span class="kw">${k}</span>`).join('');
+  document.getElementById('exp').className='exp show';
+  document.getElementById('nextBtn').style.display='inline-flex';
+  if(streak>=3){const sb=document.getElementById('streakBadge');sb.className='streak';sb.textContent=streak+'連続正解 🔥'}
 }
 
 function updateStats(){
-  document.getElementById('sTotal').textContent = total;
-  document.getElementById('sOk').textContent = ok;
-  document.getElementById('sNg').textContent = ng;
-  document.getElementById('sRate').textContent = total > 0 ? Math.round(ok/total*100)+'%' : '—';
+  document.getElementById('sTotal').textContent=total;
+  document.getElementById('sOk').textContent=ok;
+  document.getElementById('sNg').textContent=ng;
+  document.getElementById('sRate').textContent=total>0?Math.round(ok/total*100)+'%':'—';
 }
-
-function nextQ(){ cur++; renderQ(); }
-function skipQ(){ cur++; renderQ(); }
+function nextQ(){cur++;renderQ()}
+function skipQ(){cur++;renderQ()}
 
 function showResult(){
   document.getElementById('qCard').style.display='none';
-  const rw = document.getElementById('resultWrap');
-  rw.style.display = 'block';
-  const rate = total > 0 ? Math.round(ok/total*100) : 0;
-  const msg = rate>=75 ? '合格圏内です！この調子で本番も突破しましょう！'
-            : rate>=50 ? '半分以上正解！苦手分野を絞って復習しよう。'
-                       : '基礎から丁寧に積み上げていきましょう。';
-  const domBars = Object.entries(domainStats).filter(([,v])=>v.total>0).map(([d,v])=>`
+  document.getElementById('result').classList.add('show');
+  const rate=total>0?Math.round(ok/total*100):0;
+  document.getElementById('resultSc').textContent=ok+'/'+total;
+  document.getElementById('resultRate').textContent=rate+'%';
+  const circ=314;
+  document.getElementById('resultArc').setAttribute('stroke-dasharray',Math.round(circ*rate/100)+' '+circ);
+  document.getElementById('resultArc').setAttribute('stroke',rate>=75?'#34D058':rate>=50?'#E3B341':'#F85149');
+  document.getElementById('resultMsg').textContent=rate>=75?'合格圏内です！この調子で本番も突破しましょう！':rate>=50?'半分以上正解！苦手分野を絞って復習しよう。':'基礎から丁寧に積み上げていきましょう。';
+  const dg=document.getElementById('domainGrid');
+  dg.innerHTML=Object.entries(domainStats).filter(([,v])=>v.total>0).map(([d,v])=>`
     <div class="domain-card">
       <div class="domain-name">${d}</div>
-      <div class="domain-bar-bg"><div class="domain-bar-fill" style="width:${Math.round(v.ok/v.total*100)}%"></div></div>
-      <div class="domain-rate">${v.ok}/${v.total} (${Math.round(v.ok/v.total*100)}%)</div>
+      <div class="domain-bar"><div class="domain-bar-fill" style="width:${Math.round(v.ok/v.total*100)}%"></div></div>
+      <div class="domain-rate">${v.ok}/${v.total} · ${Math.round(v.ok/v.total*100)}%</div>
     </div>`).join('');
-  rw.innerHTML = `<div class="result-wrap">
-    <div class="result-sc">${ok}/${total}</div>
-    <div class="result-sub">正答率 ${rate}%</div>
-    <div class="result-msg">${msg}</div>
-    ${domBars ? `<div class="domain-grid">${domBars}</div>` : ''}
-    <div style="margin-top:1.5rem">
-      <button class="btn btn-p" onclick="restart()"><i class="ti ti-refresh" style="font-size:14px;vertical-align:-1px;margin-right:4px"></i>もう一度挑戦</button>
-    </div>
-  </div>`;
 }
 
-// FIX 3: restart時にactiveDomainとカテゴリボタンも「全て」に戻す
 function restart(){
-  cur=0; total=0; ok=0; ng=0; streak=0;
-  DOMAINS.slice(1).forEach(d => { domainStats[d]={ok:0,total:0}; });
-  activeDomain = "全て";
-  document.querySelectorAll('.cat-btn').forEach((b,i) => b.classList.toggle('on', i===0));
-  updateStats();
-  buildPool();
-  renderQ();
-  document.getElementById('resultWrap').style.display='none';
+  cur=0;total=0;ok=0;ng=0;streak=0;
+  DOMAINS.slice(1).forEach(d=>{domainStats[d]={ok:0,total:0}});
+  activeDomain="全て";
+  document.querySelectorAll('.cat').forEach((b,i)=>b.classList.toggle('on',i===0));
+  updateStats();buildPool();
+  document.getElementById('result').classList.remove('show');
   document.getElementById('qCard').style.display='block';
+  renderQ();
 }
 
-initCats();
-buildPool();
-renderQ();
+initCats();buildPool();renderQ();
 </script>
 </body>
 </html>
