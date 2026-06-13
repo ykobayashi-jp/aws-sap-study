@@ -177,6 +177,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <button class="inner-tab" onclick="itab('cs','sec',this)">セキュリティ</button>
     <button class="inner-tab" onclick="itab('cs','storage',this)">ストレージ</button>
     <button class="inner-tab" onclick="itab('cs','integ',this)">統合・分析</button>
+    <button class="inner-tab" onclick="itab('cs','migration',this)">移行ツール</button>
+    <button class="inner-tab" onclick="itab('cs','cost',this)">コスト管理</button>
+    <button class="inner-tab" onclick="itab('cs','ops',this)">運用・ML</button>
   </div>
   <div id="cs-compute" class="inner-panel show"><div class="svc-grid">
     <div class="svc-card"><div class="svc-name">EC2 Auto Scaling</div><div class="svc-desc">ターゲット追跡 / ステップ / スケジュールの3ポリシー。スケールイン保護あり。</div><div class="svc-tags"><span class="badge b-blue">HA</span><span class="badge b-green">コスト</span></div></div>
@@ -193,14 +196,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="svc-card"><div class="svc-name">ElastiCache Redis</div><div class="svc-desc">永続化・複雑データ型・Pub/Sub対応。クラスターモードでシャーディング。マルチAZ対応。</div><div class="svc-tags"><span class="badge b-amber">キャッシュ</span></div></div>
     <div class="svc-card"><div class="svc-name">ElastiCache Memcached</div><div class="svc-desc">シンプル・高速・マルチスレッド。永続化なし。単純キャッシュ用途向け。</div><div class="svc-tags"><span class="badge b-amber">キャッシュ</span></div></div>
     <div class="svc-card"><div class="svc-name">Redshift</div><div class="svc-desc">列指向DWH。Spectrum=S3直接クエリ。Serverless対応。RA3で共有ストレージ。</div><div class="svc-tags"><span class="badge b-teal">分析</span></div></div>
+    <div class="svc-card"><div class="svc-name">DynamoDB Streams</div><div class="svc-desc">テーブルへの変更(INSERT/UPDATE/DELETE)を順序付きストリームで提供。Lambdaと組み合わせてリアルタイム同期・通知に活用。保持期間24時間。</div><div class="svc-tags"><span class="badge b-purple">NoSQL</span></div></div>
+    <div class="svc-card"><div class="svc-name">OpenSearch Service</div><div class="svc-desc">フルテキスト検索・リアルタイム分析。Kibana(OpenSearch Dashboards)でダッシュボード作成。ログ分析・全文検索に最適。Elasticsearchの後継。</div><div class="svc-tags"><span class="badge b-teal">分析</span></div></div>
   </div></div>
   <div id="cs-net" class="inner-panel"><div class="svc-grid">
     <div class="svc-card"><div class="svc-name">Transit Gateway</div><div class="svc-desc">ハブ&スポーク型VPC接続。VPN/DXアタッチメント可。TGWピアリングでリージョン間接続。</div><div class="svc-tags"><span class="badge b-blue">ネットワーク</span><span class="badge b-red">重要</span></div></div>
     <div class="svc-card"><div class="svc-name">Direct Connect</div><div class="svc-desc">専用線接続。1/10Gbps。DX Gatewayで複数VPC接続。バックアップにVPN推奨。</div><div class="svc-tags"><span class="badge b-blue">接続</span></div></div>
-    <div class="svc-card"><div class="svc-name">CloudFront</div><div class="svc-desc">エッジ450+拠点。Lambda@Edgeで処理。Origin Shield追加でオリジン保護。署名付きURL対応。</div><div class="svc-tags"><span class="badge b-green">CDN</span></div></div>
-    <div class="svc-card"><div class="svc-name">VPC Endpoint</div><div class="svc-desc">Gateway型(S3/DynamoDB)=無料。Interface型(PrivateLink)=有料。インターネット不要でAWSサービスに接続。</div><div class="svc-tags"><span class="badge b-teal">セキュリティ</span></div></div>
+    <div class="svc-card"><div class="svc-name">CloudFront</div><div class="svc-desc">エッジ450+拠点。Lambda@Edgeで処理。Origin Shield追加でオリジン保護・転送コスト削減。署名付きURL対応。</div><div class="svc-tags"><span class="badge b-green">CDN</span></div></div>
+    <div class="svc-card"><div class="svc-name">VPC Flow Logs</div><div class="svc-desc">ENIを通過する全トラフィック(IP・ポート・プロトコル・許可/拒否)を記録。S3またはCloudWatch Logsに保存。セキュリティ調査・異常検知に必須。</div><div class="svc-tags"><span class="badge b-blue">ネットワーク</span></div></div>
+    <div class="svc-card"><div class="svc-name">Network Firewall</div><div class="svc-desc">VPCレベルのマネージドファイアウォール。Suricataベースのルールでドメインフィルタリング・IDS/IPS・L7プロトコル検査が可能。SGやNACLより高度な制御。</div><div class="svc-tags"><span class="badge b-red">セキュリティ</span></div></div>
+    <div class="svc-card"><div class="svc-name">Gateway Load Balancer (GWLB)</div><div class="svc-desc">サードパーティのネットワークアプライアンス(ファイアウォール等)へのトラフィック転送に特化。GENEVEカプセル化で透過転送。ALB/NLBとは別の用途。</div><div class="svc-tags"><span class="badge b-blue">ネットワーク</span></div></div>
+    <div class="svc-card"><div class="svc-name">VPC Endpoint</div><div class="svc-desc">Gateway型(S3/DynamoDB)=無料。Interface型(PrivateLink)=有料。インターネット/NATゲートウェイ不要でAWSサービスに接続。</div><div class="svc-tags"><span class="badge b-teal">セキュリティ</span></div></div>
     <div class="svc-card"><div class="svc-name">Route 53</div><div class="svc-desc">フェイルオーバー / 加重 / レイテンシー / 地理的 / 近接性 / 複数値 の6ルーティングポリシー。</div><div class="svc-tags"><span class="badge b-blue">DNS</span></div></div>
     <div class="svc-card"><div class="svc-name">Global Accelerator</div><div class="svc-desc">Anycast IPで最寄りエッジから最適ルーティング。静的IP×2。TCP/UDP汎用。CloudFrontはHTTP特化。</div><div class="svc-tags"><span class="badge b-green">パフォーマンス</span></div></div>
+    <div class="svc-card"><div class="svc-name">Egress-Only IGW</div><div class="svc-desc">IPv6専用のアウトバウンドゲートウェイ。IPv4のNATゲートウェイに相当。インバウンドIPv6通信を遮断しアウトバウンドのみ許可。</div><div class="svc-tags"><span class="badge b-blue">ネットワーク</span></div></div>
+    <div class="svc-card"><div class="svc-name">PrivateLink</div><div class="svc-desc">VPCをまたいでサービスをプライベート公開。CIDR重複してもOK。推移的ルーティング不要。NLBをフロントエンドに使用。</div><div class="svc-tags"><span class="badge b-teal">セキュリティ</span><span class="badge b-red">重要</span></div></div>
   </div></div>
   <div id="cs-sec" class="inner-panel"><div class="svc-grid">
     <div class="svc-card"><div class="svc-name">IAM Policy評価</div><div class="svc-desc">明示的Deny &gt; Allow。暗黙的Denyがデフォルト。SCPはOrg全体に適用しルートも拒否可。</div><div class="svc-tags"><span class="badge b-red">重要</span></div></div>
@@ -209,6 +219,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="svc-card"><div class="svc-name">GuardDuty</div><div class="svc-desc">脅威検知(機械学習)。VPCフロー/DNS/CloudTrailを分析。S3保護・EKS保護も追加可。</div><div class="svc-tags"><span class="badge b-amber">検知</span></div></div>
     <div class="svc-card"><div class="svc-name">WAF + Shield</div><div class="svc-desc">WAF=L7フィルタ。Shield Standard=無料DDoS。Shield Advanced=24/7サポート+コスト保護。</div><div class="svc-tags"><span class="badge b-red">保護</span></div></div>
     <div class="svc-card"><div class="svc-name">Macie</div><div class="svc-desc">S3内PII(個人情報)を機械学習で自動検出。GDPR/HIPAA対応に有効。</div><div class="svc-tags"><span class="badge b-purple">コンプライアンス</span></div></div>
+    <div class="svc-card"><div class="svc-name">Cognito</div><div class="svc-desc">ユーザープール=認証基盤(MFA・ソーシャルログイン)。IDプール=AWS一時認証情報の払い出し。モバイル/Webアプリの認証に最適。</div><div class="svc-tags"><span class="badge b-purple">認証</span><span class="badge b-red">重要</span></div></div>
+    <div class="svc-card"><div class="svc-name">AWS Config</div><div class="svc-desc">リソース設定変更を継続的に記録・評価。Config RulesでNon-compliantを検出。設定の変更履歴をタイムラインで可視化。SSM Automationで自動修復も可能。</div><div class="svc-tags"><span class="badge b-amber">コンプライアンス</span><span class="badge b-red">重要</span></div></div>
   </div></div>
   <div id="cs-storage" class="inner-panel"><div class="svc-grid">
     <div class="svc-card"><div class="svc-name">S3 ストレージクラス</div><div class="svc-desc">Standard → IA(30日) → Glacier Instant(90日) → Glacier Flexible → Deep Archive。Lifecycleで自動移行。</div><div class="svc-tags"><span class="badge b-green">コスト</span></div></div>
@@ -226,6 +238,41 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="svc-card"><div class="svc-name">EventBridge</div><div class="svc-desc">イベントバス。cronスケジュール対応。クロスアカウント/リージョンルーティング。Schema Registry。</div><div class="svc-tags"><span class="badge b-blue">イベント</span></div></div>
     <div class="svc-card"><div class="svc-name">Step Functions</div><div class="svc-desc">Standard(最大1年) vs Express(最大5分・高スループット)。試験では用途の使い分けを問われる。</div><div class="svc-tags"><span class="badge b-amber">ワークフロー</span></div></div>
   </div></div>
+
+  <!-- 移行ツール -->
+  <div id="cs-migration" class="inner-panel"><div class="svc-grid">
+    <div class="svc-card"><div class="svc-name">Application Migration Service (MGN)</div><div class="svc-desc">旧CloudEndure。オンプレVMをリアルタイムレプリケーションしEC2にライブマイグレーション。ダウンタイム数分のみ。</div><div class="svc-tags"><span class="badge b-amber">移行</span><span class="badge b-red">重要</span></div></div>
+    <div class="svc-card"><div class="svc-name">DMS (Database Migration Service)</div><div class="svc-desc">同種・異種DB間の移行。CDC(継続レプリケーション)で最小ダウンタイムを実現。カットオーバーはアプリ側で制御。</div><div class="svc-tags"><span class="badge b-amber">移行</span><span class="badge b-red">重要</span></div></div>
+    <div class="svc-card"><div class="svc-name">SCT (Schema Conversion Tool)</div><div class="svc-desc">Oracle→PostgreSQL等の異種DB間スキーマ変換。変換できない箇所をレポート。DMSとセットで使う。</div><div class="svc-tags"><span class="badge b-amber">移行</span></div></div>
+    <div class="svc-card"><div class="svc-name">Application Discovery Service</div><div class="svc-desc">オンプレサーバーの依存関係・CPU/メモリ使用率を自動収集。移行計画の第一ステップ。エージェント/エージェントレス対応。</div><div class="svc-tags"><span class="badge b-amber">移行</span></div></div>
+    <div class="svc-card"><div class="svc-name">Migration Hub</div><div class="svc-desc">DMS・MGN等の複数移行ツールの進捗を一元管理するダッシュボード。Discovery後の進捗追跡に使用。</div><div class="svc-tags"><span class="badge b-amber">移行</span></div></div>
+    <div class="svc-card"><div class="svc-name">Snowball Edge</div><div class="svc-desc">物理デバイスで大量データを転送。容量80TB。帯域が低い(100Mbps以下)場合にインターネット転送より大幅に速い。</div><div class="svc-tags"><span class="badge b-amber">移行</span></div></div>
+    <div class="svc-card"><div class="svc-name">AWS Glue</div><div class="svc-desc">サーバーレスETL。PySpark/Python Shellジョブ。Data Catalogでスキーマ管理。S3→RedshiftのETLに最適。</div><div class="svc-tags"><span class="badge b-teal">分析</span></div></div>
+    <div class="svc-card"><div class="svc-name">Lake Formation</div><div class="svc-desc">S3ベースのデータレイク構築・管理。Glue Data Catalogと統合。列レベルのアクセス制御(FGAC)が可能。</div><div class="svc-tags"><span class="badge b-teal">分析</span></div></div>
+  </div></div>
+
+  <!-- コスト管理 -->
+  <div id="cs-cost" class="inner-panel"><div class="svc-grid">
+    <div class="svc-card"><div class="svc-name">Compute Optimizer</div><div class="svc-desc">EC2・Lambda・EBSの使用状況を機械学習で分析し最適インスタンスタイプを推奨。過剰プロビジョニング削減に使用。</div><div class="svc-tags"><span class="badge b-green">コスト</span></div></div>
+    <div class="svc-card"><div class="svc-name">AWS Budgets</div><div class="svc-desc">コスト・使用量・RI/SPカバレッジの予算設定とアラート。SNS/Lambdaと連携して自動停止も可能。</div><div class="svc-tags"><span class="badge b-green">コスト</span></div></div>
+    <div class="svc-card"><div class="svc-name">Cost & Usage Report (CUR)</div><div class="svc-desc">最も詳細なコストデータをS3に出力。Athena/QuickSightで分析。部門別チャージバックに活用。</div><div class="svc-tags"><span class="badge b-green">コスト</span></div></div>
+    <div class="svc-card"><div class="svc-name">Cost Explorer</div><div class="svc-desc">コストの可視化・分析・予測ツール。RI/SPの購入推奨も表示。アラート機能はなくBudgetsと役割が異なる。</div><div class="svc-tags"><span class="badge b-green">コスト</span></div></div>
+    <div class="svc-card"><div class="svc-name">Data Lifecycle Manager (DLM)</div><div class="svc-desc">EBSスナップショットの自動作成・世代管理・削除。保持数や保持期間のポリシーを設定して自動化。</div><div class="svc-tags"><span class="badge b-green">コスト</span></div></div>
+    <div class="svc-card"><div class="svc-name">コスト配分タグ</div><div class="svc-desc">リソースにタグを付けてCost Explorerで部門・プロジェクト別にコストを集計。事前に有効化が必要。</div><div class="svc-tags"><span class="badge b-green">コスト</span></div></div>
+  </div></div>
+
+  <!-- 運用・ML -->
+  <div id="cs-ops" class="inner-panel"><div class="svc-grid">
+    <div class="svc-card"><div class="svc-name">Session Manager</div><div class="svc-desc">SSHキー・踏み台・ポート開放不要でEC2にアクセス。セッションログをS3/CloudWatch Logsに自動記録。IAMで制御。</div><div class="svc-tags"><span class="badge b-blue">運用</span><span class="badge b-red">重要</span></div></div>
+    <div class="svc-card"><div class="svc-name">Patch Manager</div><div class="svc-desc">SSMエージェント経由で複数EC2に一括パッチ適用。Maintenance Windowでスケジュール定義。Complianceでレポート生成。</div><div class="svc-tags"><span class="badge b-blue">運用</span></div></div>
+    <div class="svc-card"><div class="svc-name">RDS Proxy</div><div class="svc-desc">LambdaとRDS間の接続をプール・再利用。同時実行数増加時のDB接続枯渇を防止。フェイルオーバー時間も短縮。</div><div class="svc-tags"><span class="badge b-blue">データベース</span><span class="badge b-red">重要</span></div></div>
+    <div class="svc-card"><div class="svc-name">AWS Health Dashboard</div><div class="svc-desc">自アカウントが使うサービス・リージョンへの障害影響を表示。EventBridgeでHealth Eventをキャプチャし自動通知可能。</div><div class="svc-tags"><span class="badge b-blue">運用</span></div></div>
+    <div class="svc-card"><div class="svc-name">QuickSight</div><div class="svc-desc">ノーコードBIサービス。S3・Athena・Redshift等に接続してダッシュボードを作成。SPICEエンジンで高速。非エンジニアも利用可。</div><div class="svc-tags"><span class="badge b-teal">分析</span></div></div>
+    <div class="svc-card"><div class="svc-name">SageMaker</div><div class="svc-desc">MLライフサイクル全体を管理。Studio(IDE)・Pipelines(MLパイプライン)・Endpoint(推論)をフルマネージドで提供。</div><div class="svc-tags"><span class="badge b-purple">ML</span></div></div>
+    <div class="svc-card"><div class="svc-name">IRSA (IAM Roles for Service Accounts)</div><div class="svc-desc">EKSのPodにIAMロールをService Account単位で付与。OIDCプロバイダー経由で一時認証情報を発行。最小権限を実現。</div><div class="svc-tags"><span class="badge b-teal">コンテナ</span></div></div>
+    <div class="svc-card"><div class="svc-name">MemoryDB for Redis</div><div class="svc-desc">完全Redis互換のマネージドDB。マルチAZトランザクションログで永続性を保証。ElastiCacheより高耐久性が必要な場合に選択。</div><div class="svc-tags"><span class="badge b-purple">データベース</span></div></div>
+  </div></div>
+
 </div>
 
 <!-- COMPARE -->
@@ -493,6 +540,19 @@ const GL=[
   {abbr:"DAX",full:"DynamoDB Accelerator",desc:"DynamoDB専用インメモリキャッシュ。マイクロ秒レスポンス。アプリ変更最小。"},
   {abbr:"TTL",full:"Time To Live",desc:"DynamoDBのアイテム自動削除機能。期限切れアイテムをバックグラウンドで削除。"},
   {abbr:"ARC",full:"Application Recovery Controller",desc:"Route 53の機能。マルチリージョンフェイルオーバーを安全にオーケストレーション。"},
+  {abbr:"MGN",full:"Application Migration Service",desc:"旧CloudEndure Migration。オンプレVMをリアルタイムレプリケーションしEC2にライブマイグレーション。"},
+  {abbr:"SCT",full:"Schema Conversion Tool",desc:"異種DB間(Oracle→PostgreSQL等)のスキーマを自動変換。変換できない箇所をレポート。DMSと組み合わせて使用。"},
+  {abbr:"DLM",full:"Data Lifecycle Manager",desc:"EBSスナップショットのライフサイクル自動管理。保持数・期間を設定し古いスナップショットを自動削除。"},
+  {abbr:"IRSA",full:"IAM Roles for Service Accounts",desc:"EKSのPodにIAMロールをService Account単位で付与する仕組み。OIDCプロバイダー経由で一時認証情報を発行。"},
+  {abbr:"MRK",full:"Multi-Region Key",desc:"KMSのマルチリージョンキー。プライマリとレプリカが同じキーIDを共有しリージョン間でシームレスに暗号化/復号が可能。"},
+  {abbr:"CUR",full:"Cost and Usage Report",desc:"AWSの最も詳細なコストデータをS3に出力。Athena/QuickSightと組み合わせてコスト分析・部門別チャージバックに活用。"},
+  {abbr:"FGAC",full:"Fine-Grained Access Control",desc:"Lake Formationの列レベル・行レベルのきめ細かいアクセス制御機能。IAMポリシーより細かい粒度でデータアクセスを制御。"},
+  {abbr:"MPP",full:"Massively Parallel Processing",desc:"大規模並列処理。Redshiftが採用するアーキテクチャで、複数ノードが並列にSQLを処理し高速なDWHクエリを実現。"},
+  {abbr:"GWLB",full:"Gateway Load Balancer",desc:"サードパーティのネットワークアプライアンス向けLB。GENEVEカプセル化でトラフィックを透過転送。ALB/NLBとは別用途。"},
+  {abbr:"GENEVE",full:"Generic Network Virtualization Encapsulation",desc:"GWLBがトラフィックをネットワークアプライアンスへ転送する際に使うカプセル化プロトコル(UDP 6081ポート)。"},
+  {abbr:"UP",full:"User Pool (Cognito)",desc:"CognitoのユーザーディレクトリサービスでMFA・ソーシャルログイン対応の認証基盤。IDプールと組み合わせてAWSリソースアクセスを付与する。"},
+  {abbr:"FGAC",full:"Fine-Grained Access Control",desc:"Lake FormationやDynamoDBの列レベル・行レベルのきめ細かいアクセス制御機能。"},
+  {abbr:"EIGW",full:"Egress-Only Internet Gateway",desc:"IPv6専用のアウトバウンドゲートウェイ。IPv4のNATゲートウェイに相当。インバウンドIPv6通信を遮断。"},
 ];
 document.getElementById('glGrid').innerHTML=GL.map(g=>`<div class="gl-item" data-s="${g.abbr} ${g.full} ${g.desc}"><div class="gl-abbr">${g.abbr}</div><div class="gl-full">${g.full}</div><div class="gl-desc">${g.desc}</div></div>`).join('');
 function filterGL(q){document.querySelectorAll('.gl-item').forEach(el=>el.classList.toggle('hidden',!el.dataset.s.toLowerCase().includes(q.toLowerCase())))}
