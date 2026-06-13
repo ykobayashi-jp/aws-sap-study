@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS SAP-C02 参考書 | aws-sap-study</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+:root{--bg:#f6f8fa;--surface:#fff;--border:#e1e4e8;--border2:#d0d7de;--text:#1a1a2e;--muted:#57606a;--hint:#8b949e;--blue:#0969da;--blue-bg:#ddf4ff;--blue-text:#0550ae;--green:#1a7f37;--green-bg:#dafbe1;--green-text:#116329;--amber:#9a6700;--amber-bg:#fff8c5;--amber-text:#7d4e00;--red:#cf222e;--red-bg:#ffebe9;--red-text:#a40e26;--purple:#6e40c9;--purple-bg:#fbefff;--purple-text:#512a97;--teal:#0d7377;--teal-bg:#e6ffec;--teal-text:#0d5c3a;--coral-bg:#fff0e6;--coral-text:#7a1a00;--nav-w:220px;--r:8px;--rl:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:var(--nav-w);background:var(--surface);border-right:1px solid var(--border);padding:1.25rem 0;position:sticky;top:0;height:100vh;overflow-y:auto;flex-shrink:0}
+.main{flex:1;padding:2rem;max-width:900px}
+.sidebar-logo{padding:0 1rem 1rem;border-bottom:1px solid var(--border);margin-bottom:.75rem}
+.sidebar-logo a{font-size:13px;font-weight:600;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:6px}
+.back{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:3px;margin-top:6px;text-decoration:none}
+.back:hover{color:var(--blue)}
+.nav-section{padding:.25rem 1rem;font-size:11px;font-weight:600;color:var(--hint);text-transform:uppercase;letter-spacing:.5px;margin-top:.75rem}
+.nav-item{display:flex;align-items:center;gap:7px;padding:.4rem 1rem;font-size:13px;color:var(--muted);cursor:pointer;border-left:2px solid transparent;transition:all .15s}
+.nav-item:hover{color:var(--text);background:#f3f4f6}
+.nav-item.active{color:var(--blue);border-left-color:var(--blue);background:var(--blue-bg);font-weight:500}
+.nav-item i{font-size:15px;flex-shrink:0}
+.section{display:none}
+.section.active{display:block}
+.sec-title{font-size:20px;font-weight:600;margin-bottom:4px}
+.sec-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rl);padding:1.25rem;margin-bottom:1rem}
+.card-title{font-size:14px;font-weight:600;margin-bottom:.875rem;display:flex;align-items:center;gap:7px}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;font-weight:500;border:1px solid transparent;white-space:nowrap}
+.b-blue{background:var(--blue-bg);color:var(--blue-text);border-color:#b6e3ff}
+.b-green{background:var(--green-bg);color:var(--green-text);border-color:#aceebb}
+.b-amber{background:var(--amber-bg);color:var(--amber-text);border-color:#f0c000}
+.b-red{background:var(--red-bg);color:var(--red-text);border-color:#ffcecb}
+.b-purple{background:var(--purple-bg);color:var(--purple-text);border-color:#e2c5fd}
+.b-teal{background:var(--teal-bg);color:var(--teal-text);border-color:#9ce4c0}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px}
+.svc-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px}
+.svc-name{font-size:13px;font-weight:600;margin-bottom:3px}
+.svc-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.svc-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+.cmp-wrap{overflow-x:auto;margin-bottom:.5rem}
+.cmp-tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:500px}
+.cmp-tbl th{background:var(--bg);padding:8px 10px;text-align:left;font-weight:600;color:var(--muted);border-bottom:1px solid var(--border)}
+.cmp-tbl td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
+.cmp-tbl tr:last-child td{border-bottom:none}
+.cmp-tbl .rec{background:#f0fff4;font-weight:500}
+.point-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.point-item{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--bg);border-radius:var(--r);border:1px solid var(--border)}
+.point-icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-size:13px}
+.pi-tip{background:var(--blue-bg);color:var(--blue)}
+.pi-warn{background:var(--amber-bg);color:var(--amber)}
+.pi-key{background:var(--purple-bg);color:var(--purple)}
+.point-text{font-size:13px;line-height:1.6}
+.point-text strong{font-weight:600}
+.gl-search{margin-bottom:1rem}
+.gl-search input{width:100%;padding:8px 12px;border:1px solid var(--border2);border-radius:var(--r);font-size:13px;background:var(--surface);color:var(--text);outline:none}
+.gl-search input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(9,105,218,.1)}
+.gl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px}
+.gl-item{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px}
+.gl-item.hidden{display:none}
+.gl-abbr{font-size:13px;font-weight:600;font-family:monospace;margin-bottom:2px}
+.gl-full{font-size:11px;color:var(--blue-text);margin-bottom:4px}
+.gl-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.inner-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:1.25rem;border-bottom:1px solid var(--border);padding-bottom:.75rem}
+.inner-tab{padding:5px 12px;border-radius:6px;border:1px solid transparent;background:transparent;color:var(--muted);font-size:12px;cursor:pointer;transition:all .15s}
+.inner-tab:hover{background:var(--bg)}
+.inner-tab.on{background:var(--blue-bg);color:var(--blue-text);border-color:#b6e3ff;font-weight:500}
+.inner-panel{display:none}
+.inner-panel.show{display:block}
+.dr-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem}
+.dr-card{border-radius:var(--r);padding:12px;text-align:center;border:1px solid var(--border)}
+.dr-card.t1{background:#e6f4ff;border-color:#b3d8ff}
+.dr-card.t2{background:var(--green-bg);border-color:#aceebb}
+.dr-card.t3{background:var(--amber-bg);border-color:#f0c000}
+.dr-card.t4{background:var(--coral-bg);border-color:#ffc2a1}
+.dr-name{font-size:13px;font-weight:600;margin-bottom:6px}
+.dr-rto{font-size:11px;margin-bottom:2px;color:var(--muted)}
+.dr-cost{font-size:11px;font-weight:500}
+.arch-svg{display:block;width:100%;max-width:680px;margin:0 auto}
+.note{font-size:12px;color:var(--muted);margin-top:.75rem}
+@media(max-width:640px){.sidebar{display:none}.main{padding:1rem}.dr-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <a href="#"><i class="ti ti-certificate" style="color:var(--blue)"></i>AWS SAP-C02 参考書</a>
+    <a class="back" href="index.html"><i class="ti ti-arrow-left"></i>問題演習に戻る</a>
+  </div>
+  <div class="nav-section">コンテンツ</div>
+  <div class="nav-item active" onclick="show('cheatsheet',this)"><i class="ti ti-layout-grid"></i>チートシート</div>
+  <div class="nav-item" onclick="show('compare',this)"><i class="ti ti-arrows-diff"></i>サービス比較表</div>
+  <div class="nav-item" onclick="show('points',this)"><i class="ti ti-bulb"></i>分野別ポイント</div>
+  <div class="nav-item" onclick="show('arch',this)"><i class="ti ti-topology-star"></i>アーキテクチャ図解</div>
+  <div class="nav-item" onclick="show('glossary',this)"><i class="ti ti-book"></i>用語集・略語</div>
+</nav>
+<main class="main">
+
+<!-- CHEATSHEET -->
+<div id="sec-cheatsheet" class="section active">
+  <div class="sec-title"><i class="ti ti-layout-grid" style="font-size:18px;vertical-align:-2px;margin-right:7px;color:var(--blue)"></i>チートシート</div>
+  <p class="sec-sub">SAP-C02 頻出サービスの要点一覧</p>
+  <div class="inner-tabs">
+    <button class="inner-tab on" onclick="itab('cs','compute',this)">コンピューティング</button>
+    <button class="inner-tab" onclick="itab('cs','db',this)">データベース</button>
+    <button class="inner-tab" onclick="itab('cs','net',this)">ネットワーク</button>
+    <button class="inner-tab" onclick="itab('cs','sec',this)">セキュリティ</button>
+    <button class="inner-tab" onclick="itab('cs','storage',this)">ストレージ</button>
+    <button class="inner-tab" onclick="itab('cs','integ',this)">統合・分析</button>
+  </div>
+  <div id="cs-compute" class="inner-panel show"><div class="svc-grid">
+    <div class="svc-card"><div class="svc-name">EC2 Auto Scaling</div><div class="svc-desc">ターゲット追跡 / ステップ / スケジュールの3ポリシー。スケールイン保護。起動テンプレート必須。</div><div class="svc-tags"><span class="badge b-blue">HA</span><span class="badge b-green">コスト</span></div></div>
+    <div class="svc-card"><div class="svc-name">Lambda</div><div class="svc-desc">最大15分・メモリ最大10GB・同時実行上限1000(デフォルト)。Provisioned Concurrencyでコールドスタート排除。</div><div class="svc-tags"><span class="badge b-purple">サーバーレス</span></div></div>
+    <div class="svc-card"><div class="svc-name">ECS (Fargate)</div><div class="svc-desc">サーバーレスコンテナ。タスク定義でCPU/メモリ指定。App Meshでサービスメッシュ構成。</div><div class="svc-tags"><span class="badge b-teal">コンテナ</span></div></div>
+    <div class="svc-card"><div class="svc-name">EKS</div><div class="svc-desc">マネージドK8s。既存K8sマニフェストを移植可。EC2/Fargate/EKS Anywhereに対応。</div><div class="svc-tags"><span class="badge b-teal">コンテナ</span></div></div>
+    <div class="svc-card"><div class="svc-name">Spot Instance</div><div class="svc-desc">最大90%割引。中断通知は2分前。Spot Fleetで複数タイプ混在、可用性向上。</div><div class="svc-tags"><span class="badge b-green">コスト</span></div></div>
+    <div class="svc-card"><div class="svc-name">Savings Plans</div><div class="svc-desc">Compute(最大66%) / EC2 Instance(最大72%) / SageMakerの3種。1〜3年コミット。</div><div class="svc-tags"><span class="badge b-green">コスト</span></div></div>
+  </div></div>
+  <div id="cs-db" class="inner-panel"><div class="svc-grid">
+    <div class="svc-card"><div class="svc-name">RDS Multi-AZ</div><div class="svc-desc">同期レプリケーション。フェイルオーバー自動(1〜2分)。Read Replicaは非同期で別概念。</div><div class="svc-tags"><span class="badge b-blue">HA</span></div></div>
+    <div class="svc-card"><div class="svc-name">Aurora Global DB</div><div class="svc-desc">リージョン間レプリケーション遅延 &lt;1秒。フェイルオーバー &lt;1分。最大5セカンダリリージョン。</div><div class="svc-tags"><span class="badge b-blue">DR</span><span class="badge b-red">重要</span></div></div>
+    <div class="svc-card"><div class="svc-name">DynamoDB</div><div class="svc-desc">DAX=マイクロ秒キャッシュ。Streams=変更イベント。Global Tables=マルチリージョン。TTL=自動削除。</div><div class="svc-tags"><span class="badge b-purple">NoSQL</span></div></div>
+    <div class="svc-card"><div class="svc-name">ElastiCache Redis</div><div class="svc-desc">永続化・複雑データ型・Pub/Sub対応。クラスターモードでシャーディング。マルチAZ対応。</div><div class="svc-tags"><span class="badge b-amber">キャッシュ</span></div></div>
+    <div class="svc-card"><div class="svc-name">ElastiCache Memcached</div><div class="svc-desc">シンプル・高速・マルチスレッド。永続化なし。単純キャッシュ用途向け。</div><div class="svc-tags"><span class="badge b-amber">キャッシュ</span></div></div>
+    <div class="svc-card"><div class="svc-name">Redshift</div><div class="svc-desc">列指向DWH。Spectrum=S3直接クエリ。Serverless=プロビジョニング不要。RA3で共有ストレージ。</div><div class="svc-tags"><span class="badge b-teal">分析</span></div></div>
+  </div></div>
+  <div id="cs-net" class="inner-panel"><div class="svc-grid">
+    <div class="svc-card"><div class="svc-name">Transit Gateway</div><div class="svc-desc">ハブ&スポーク型VPC接続。VPN/DXアタッチメント可。TGWピアリングでリージョン間接続。</div><div class="svc-tags"><span class="badge b-blue">ネットワーク</span><span class="badge b-red">重要</span></div></div>
+    <div class="svc-card"><div class="svc-name">Direct Connect</div><div class="svc-desc">専用線接続。1/10Gbps。DX Gatewayで複数VPC接続。バックアップにVPN推奨。</div><div class="svc-tags"><span class="badge b-blue">接続</span></div></div>
+    <div class="svc-card"><div class="svc-name">CloudFront</div><div class="svc-desc">エッジ450+拠点。Lambda@Edgeで処理。Origin Shield追加でオリジン保護。署名付きURL対応。</div><div class="svc-tags"><span class="badge b-green">CDN</span></div></div>
+    <div class="svc-card"><div class="svc-name">VPC Endpoint</div><div class="svc-desc">Gateway型(S3/DynamoDB)=無料。Interface型(PrivateLink)=有料。インターネット不要。</div><div class="svc-tags"><span class="badge b-teal">セキュリティ</span></div></div>
+    <div class="svc-card"><div class="svc-name">Route 53</div><div class="svc-desc">フェイルオーバー / 加重 / レイテンシー / 地理的 / 近接性 / 複数値 の6ルーティングポリシー。</div><div class="svc-tags"><span class="badge b-blue">DNS</span></div></div>
+    <div class="svc-card"><div class="svc-name">Global Accelerator</div><div class="svc-desc">Anycast IPで最寄りエッジから最適ルーティング。静的IP×2。TCP/UDP汎用。CloudFrontはHTTP特化。</div><div class="svc-tags"><span class="badge b-green">パフォーマンス</span></div></div>
+  </div></div>
+  <div id="cs-sec" class="inner-panel"><div class="svc-grid">
+    <div class="svc-card"><div class="svc-name">IAM Policy評価</div><div class="svc-desc">明示的Deny &gt; Allow。暗黙的Denyがデフォルト。SCPはOrg全体に適用しルートも拒否可能。</div><div class="svc-tags"><span class="badge b-red">重要</span></div></div>
+    <div class="svc-card"><div class="svc-name">KMS</div><div class="svc-desc">CMK=顧客管理キー。自動ローテーション(年1回)。マルチリージョンキーで複数リージョン利用可。</div><div class="svc-tags"><span class="badge b-teal">暗号化</span></div></div>
+    <div class="svc-card"><div class="svc-name">CloudHSM</div><div class="svc-desc">専有ハードウェアHSM。FIPS 140-2 Level 3。KMSカスタムキーストアと連携で透過的暗号化。</div><div class="svc-tags"><span class="badge b-teal">暗号化</span><span class="badge b-red">金融向け</span></div></div>
+    <div class="svc-card"><div class="svc-name">GuardDuty</div><div class="svc-desc">脅威検知(機械学習)。VPCフロー/DNS/CloudTrailを分析。S3保護・EKS保護も追加可。</div><div class="svc-tags"><span class="badge b-amber">検知</span></div></div>
+    <div class="svc-card"><div class="svc-name">WAF + Shield</div><div class="svc-desc">WAF=L7フィルタ。Shield Standard=無料DDoS。Shield Advanced=24/7サポート+コスト保護。</div><div class="svc-tags"><span class="badge b-red">保護</span></div></div>
+    <div class="svc-card"><div class="svc-name">Macie</div><div class="svc-desc">S3内PII(個人情報)を機械学習で自動検出。GDPR/HIPAA対応に有効。</div><div class="svc-tags"><span class="badge b-purple">コンプライアンス</span></div></div>
+  </div></div>
+  <div id="cs-storage" class="inner-panel"><div class="svc-grid">
+    <div class="svc-card"><div class="svc-name">S3 ストレージクラス</div><div class="svc-desc">Standard → IA(30日) → Glacier Instant(90日) → Glacier Flexible → Deep Archive。Lifecycleで自動移行。</div><div class="svc-tags"><span class="badge b-green">コスト</span></div></div>
+    <div class="svc-card"><div class="svc-name">S3 Intelligent-Tiering</div><div class="svc-desc">アクセスパターン不明時に自動最適化。監視コスト$0.0025/1000オブジェクト。</div><div class="svc-tags"><span class="badge b-green">コスト</span></div></div>
+    <div class="svc-card"><div class="svc-name">EFS</div><div class="svc-desc">NFSv4マネージドファイルシステム。マルチAZ同時マウント可。バースト/プロビジョンドの2スループットモード。</div><div class="svc-tags"><span class="badge b-blue">共有</span></div></div>
+    <div class="svc-card"><div class="svc-name">FSx for Windows</div><div class="svc-desc">SMBファイルサーバー。Active Directory統合。Microsoft DFSレプリケーション対応。</div><div class="svc-tags"><span class="badge b-blue">Windows</span></div></div>
+    <div class="svc-card"><div class="svc-name">DataSync</div><div class="svc-desc">オンプレ↔AWSストレージの高速転送エージェント。S3/EFS/FSx対応。最大10Gbps。</div><div class="svc-tags"><span class="badge b-amber">移行</span></div></div>
+    <div class="svc-card"><div class="svc-name">Storage Gateway</div><div class="svc-desc">File/Volume/Tape Gatewayの3種。オンプレアプリをS3に透過的接続。ハイブリッド向け。</div><div class="svc-tags"><span class="badge b-amber">ハイブリッド</span></div></div>
+  </div></div>
+  <div id="cs-integ" class="inner-panel"><div class="svc-grid">
+    <div class="svc-card"><div class="svc-name">Kinesis Data Streams</div><div class="svc-desc">シャード1本=1MB/s or 1000rec/s。拡張ファンアウト=2MB/s/シャード。保持最大365日。</div><div class="svc-tags"><span class="badge b-teal">ストリーム</span><span class="badge b-red">重要</span></div></div>
+    <div class="svc-card"><div class="svc-name">Kinesis Firehose</div><div class="svc-desc">S3/Redshift/OpenSearch/HTTPへ配信。Parquet/ORC変換。バッファ(1MB or 60秒)。</div><div class="svc-tags"><span class="badge b-teal">配信</span></div></div>
+    <div class="svc-card"><div class="svc-name">SQS</div><div class="svc-desc">Standard=最低1回・順序不保証。FIFO=厳密順序・重複排除。DLQでエラー隔離。</div><div class="svc-tags"><span class="badge b-purple">キュー</span><span class="badge b-red">重要</span></div></div>
+    <div class="svc-card"><div class="svc-name">SNS</div><div class="svc-desc">ファンアウト。SQS/Lambda/HTTP/Email/SMSをサブスクライバに。メッセージフィルタリング対応。</div><div class="svc-tags"><span class="badge b-purple">Pub/Sub</span></div></div>
+    <div class="svc-card"><div class="svc-name">EventBridge</div><div class="svc-desc">イベントバス。cronスケジュール対応。クロスアカウント/リージョンルーティング。Schema Registry。</div><div class="svc-tags"><span class="badge b-blue">イベント</span></div></div>
+    <div class="svc-card"><div class="svc-name">Step Functions</div><div class="svc-desc">ワークフロー。Standard(最大1年) vs Express(最大5分・高スループット)。試験で使い分けを問われる。</div><div class="svc-tags"><span class="badge b-amber">ワークフロー</span></div></div>
+  </div></div>
+</div>
+
+<!-- COMPARE -->
+<div id="sec-compare" class="section">
+  <div class="sec-title"><i class="ti ti-arrows-diff" style="font-size:18px;vertical-align:-2px;margin-right:7px;color:var(--blue)"></i>サービス比較表</div>
+  <p class="sec-sub">試験で迷いやすいサービスの違いを整理</p>
+  <div class="card">
+    <div class="card-title"><i class="ti ti-refresh" style="color:var(--red)"></i>DR戦略 — RTO/RPO vs コスト</div>
+    <div class="dr-grid">
+      <div class="dr-card t1"><div class="dr-name">Backup & Restore</div><div class="dr-rto">RTO: 時間単位</div><div class="dr-rto">RPO: 時間単位</div><div class="dr-cost" style="color:#0550ae">コスト: ◎ 最安</div></div>
+      <div class="dr-card t2"><div class="dr-name">Pilot Light</div><div class="dr-rto">RTO: 数十分</div><div class="dr-rto">RPO: 分単位</div><div class="dr-cost" style="color:var(--green)">コスト: ○ 安い</div></div>
+      <div class="dr-card t3"><div class="dr-name">Warm Standby</div><div class="dr-rto">RTO: 数分</div><div class="dr-rto">RPO: 秒〜分</div><div class="dr-cost" style="color:var(--amber)">コスト: △ 中程度</div></div>
+      <div class="dr-card t4"><div class="dr-name">Multi-Site Active</div><div class="dr-rto">RTO: 秒以下</div><div class="dr-rto">RPO: ≈ 0</div><div class="dr-cost" style="color:#c0392b">コスト: ✕ 最高</div></div>
+    </div>
+    <p class="note">Pilot Light = コアのみ常時稼働、起動後にスケールアップ。Warm Standby = 縮小構成で常時稼働、即切替可。</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><i class="ti ti-database" style="color:var(--blue)"></i>RDS Multi-AZ vs Aurora Global vs DynamoDB Global Tables</div>
+    <div class="cmp-wrap"><table class="cmp-tbl">
+      <thead><tr><th>項目</th><th>RDS Multi-AZ</th><th>Aurora Global DB</th><th>DynamoDB Global Tables</th></tr></thead>
+      <tbody>
+        <tr><td>レプリケーション</td><td>同期</td><td>非同期 (&lt;1秒)</td><td>非同期 (&lt;1秒)</td></tr>
+        <tr><td>対象リージョン</td><td>同一リージョンのみ</td><td>最大5リージョン</td><td>任意のリージョン</td></tr>
+        <tr><td>フェイルオーバーRTO</td><td>1〜2分</td><td>&lt;1分</td><td>アプリ側で制御</td></tr>
+        <tr class="rec"><td>RPO</td><td>数秒</td><td>&lt;1秒 ✓ 推奨</td><td>&lt;1秒</td></tr>
+        <tr><td>用途</td><td>AZ障害対応</td><td>リージョン障害DR</td><td>グローバル低レイテンシ読取</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="card">
+    <div class="card-title"><i class="ti ti-arrows-shuffle" style="color:var(--purple)"></i>SQS vs SNS vs EventBridge vs Kinesis DS</div>
+    <div class="cmp-wrap"><table class="cmp-tbl">
+      <thead><tr><th>項目</th><th>SQS</th><th>SNS</th><th>EventBridge</th><th>Kinesis DS</th></tr></thead>
+      <tbody>
+        <tr><td>パターン</td><td>キュー(1:1)</td><td>ファンアウト(1:N)</td><td>イベントルーティング</td><td>ストリーム処理</td></tr>
+        <tr><td>コンシューマ</td><td>1つ</td><td>複数</td><td>複数ターゲット</td><td>複数(拡張ファンアウト)</td></tr>
+        <tr><td>順序保証</td><td>FIFOのみ</td><td>なし</td><td>なし</td><td>シャード内で保証</td></tr>
+        <tr><td>保持</td><td>最大14日</td><td>なし</td><td>なし(Archive可)</td><td>最大365日</td></tr>
+        <tr class="rec"><td>主な用途</td><td>疎結合・バッファ ✓</td><td>通知・ファンアウト</td><td>複雑なルーティング</td><td>IoT・ログ収集 ✓</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="card">
+    <div class="card-title"><i class="ti ti-network" style="color:var(--teal)"></i>CloudFront vs Global Accelerator</div>
+    <div class="cmp-wrap"><table class="cmp-tbl">
+      <thead><tr><th>項目</th><th>CloudFront</th><th>Global Accelerator</th></tr></thead>
+      <tbody>
+        <tr><td>プロトコル</td><td>HTTP/HTTPS</td><td>TCP/UDP 任意</td></tr>
+        <tr><td>キャッシュ</td><td>あり</td><td>なし</td></tr>
+        <tr><td>IPアドレス</td><td>動的</td><td>静的Anycast IP×2</td></tr>
+        <tr><td>フェイルオーバー</td><td>オリジンフェイルオーバー</td><td>エンドポイント切替(秒単位)</td></tr>
+        <tr class="rec"><td>向いている用途</td><td>静的コンテンツ/API配信</td><td>ゲーム/VoIP/非HTTPアプリ</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="card">
+    <div class="card-title"><i class="ti ti-lock" style="color:var(--red)"></i>KMS vs CloudHSM</div>
+    <div class="cmp-wrap"><table class="cmp-tbl">
+      <thead><tr><th>項目</th><th>AWS KMS</th><th>AWS CloudHSM</th></tr></thead>
+      <tbody>
+        <tr><td>ハードウェア</td><td>共有(マルチテナント)</td><td>専有(シングルテナント)</td></tr>
+        <tr><td>FIPS準拠</td><td>Level 2〜3</td><td>Level 3</td></tr>
+        <tr><td>KMS API</td><td>ネイティブ対応</td><td>カスタムキーストア経由</td></tr>
+        <tr><td>管理</td><td>フルマネージド</td><td>自己管理(クラスタ構築要)</td></tr>
+        <tr class="rec"><td>推奨用途</td><td>一般的な暗号化</td><td>金融規制/FIPS L3必須</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</div>
+
+<!-- POINTS -->
+<div id="sec-points" class="section">
+  <div class="sec-title"><i class="ti ti-bulb" style="font-size:18px;vertical-align:-2px;margin-right:7px;color:var(--blue)"></i>分野別ポイント</div>
+  <p class="sec-sub">試験で狙われるポイントと落とし穴</p>
+  <div class="inner-tabs">
+    <button class="inner-tab on" onclick="itab('pt','design',this)">設計</button>
+    <button class="inner-tab" onclick="itab('pt','security',this)">セキュリティ</button>
+    <button class="inner-tab" onclick="itab('pt','cost',this)">コスト</button>
+    <button class="inner-tab" onclick="itab('pt','network',this)">ネットワーク</button>
+    <button class="inner-tab" onclick="itab('pt','migration',this)">移行</button>
+  </div>
+  <div id="pt-design" class="inner-panel show"><ul class="point-list">
+    <li class="point-item"><div class="point-icon pi-key"><i class="ti ti-key"></i></div><div class="point-text"><strong>Aurora Global DB</strong> は RPO &lt;1秒・RTO &lt;1分。リージョン跨ぎのDR要件には第一候補。</div></li>
+    <li class="point-item"><div class="point-icon pi-warn"><i class="ti ti-alert-triangle"></i></div><div class="point-text"><strong>RDS Multi-AZ は同一リージョン内のみ</strong>。リージョン障害には対応不可。Read Replicaは非同期なのでRPO=0にならない。</div></li>
+    <li class="point-item"><div class="point-icon pi-tip"><i class="ti ti-bulb"></i></div><div class="point-text"><strong>スパイク対策の3層</strong>: CloudFront(エッジキャッシュ) → ElastiCache(DBキャッシュ) → Auto Scaling(EC2追加)。Auto Scalingだけでは起動3〜5分かかる。</div></li>
+    <li class="point-item"><div class="point-icon pi-key"><i class="ti ti-key"></i></div><div class="point-text"><strong>DR戦略の選択基準</strong>: RTO/RPO要件 と コスト許容範囲で決まる。「コスト効率」が問われたら Backup&amp;Restore or Pilot Light。</div></li>
+    <li class="point-item"><div class="point-icon pi-warn"><i class="ti ti-alert-triangle"></i></div><div class="point-text"><strong>Multi-Site Active/Active</strong> は最高コスト。「最もコスト効率が高い」問題では選ばない。</div></li>
+    <li class="point-item"><div class="point-icon pi-tip"><i class="ti ti-bulb"></i></div><div class="point-text"><strong>Step Functions</strong>: Standard(最大1年・非同期) vs Express(最大5分・高スループット)。試験では用途の使い分けを問われる。</div></li>
+  </ul></div>
+  <div id="pt-security" class="inner-panel"><ul class="point-list">
+    <li class="point-item"><div class="point-icon pi-key"><i class="ti ti-key"></i></div><div class="point-text"><strong>IAMポリシー評価順</strong>: 明示的Deny → Allow → 暗黙的Deny。SCPのDenyはIAMのAllowを上書きする。</div></li>
+    <li class="point-item"><div class="point-icon pi-warn"><i class="ti ti-alert-triangle"></i></div><div class="point-text"><strong>SCP+IAMの落とし穴</strong>: SCPでDenyしたうえでIAMでAllowしても効果なし。OU分離で例外アカウントを作る。</div></li>
+    <li class="point-item"><div class="point-icon pi-key"><i class="ti ti-key"></i></div><div class="point-text"><strong>CloudHSM</strong> は FIPS 140-2 Level 3 専有ハードウェア。KMSカスタムキーストアと連携すれば既存アプリ変更なし。</div></li>
+    <li class="point-item"><div class="point-icon pi-tip"><i class="ti ti-bulb"></i></div><div class="point-text"><strong>予防的vs検出的コントロール</strong>: SCP=予防的(発生させない)。Config Rules/GuardDuty=検出的(発生後に検知)。</div></li>
+    <li class="point-item"><div class="point-icon pi-warn"><i class="ti ti-alert-triangle"></i></div><div class="point-text"><strong>VPCエンドポイント</strong>: Gateway型(S3・DynamoDB)は無料。Interface型は有料。インターネット/NAT不要でAWSサービスに安全接続。</div></li>
+    <li class="point-item"><div class="point-icon pi-tip"><i class="ti ti-bulb"></i></div><div class="point-text"><strong>Macie</strong> は S3内のPIIを機械学習で検出。GDPR/HIPAA対応の問題で登場する。</div></li>
+  </ul></div>
+  <div id="pt-cost" class="inner-panel"><ul class="point-list">
+    <li class="point-item"><div class="point-icon pi-key"><i class="ti ti-key"></i></div><div class="point-text"><strong>購入オプション使い分け</strong>: 24h稼働→Reserved。中断可バッチ→Spot(最大90%引)。柔軟性重視→Savings Plans。BYOL→Dedicated Host。</div></li>
+    <li class="point-item"><div class="point-icon pi-warn"><i class="ti ti-alert-triangle"></i></div><div class="point-text"><strong>Dedicated Host は BYOL専用</strong>。コスト削減目的では選ばない。物理サーバー占有でライセンス持込み専用。</div></li>
+    <li class="point-item"><div class="point-icon pi-tip"><i class="ti ti-bulb"></i></div><div class="point-text"><strong>S3 Lifecycleポリシー</strong>: アクセスパターンが既知ならLifecycle。不明ならIntelligent-Tiering。Glacierは取得遅延を許容できる場合。</div></li>
+    <li class="point-item"><div class="point-icon pi-key"><i class="ti ti-key"></i></div><div class="point-text"><strong>Savings Plans の3種</strong>: Compute(最大66%・最も柔軟) / EC2 Instance(最大72%・特定ファミリー固定) / SageMaker。</div></li>
+    <li class="point-item"><div class="point-icon pi-warn"><i class="ti ti-alert-triangle"></i></div><div class="point-text"><strong>NATゲートウェイのコスト</strong>: データ転送料が発生。VPCエンドポイント(Gateway)でS3/DynamoDBへのNAT経由を排除できる。</div></li>
+  </ul></div>
+  <div id="pt-network" class="inner-panel"><ul class="point-list">
+    <li class="point-item"><div class="point-icon pi-key"><i class="ti ti-key"></i></div><div class="point-text"><strong>Transit Gateway</strong> は多数VPCのハブ&amp;スポーク接続。VPCピアリングフルメッシュはn*(n-1)/2の接続数が必要で推移的ルーティング不可。</div></li>
+    <li class="point-item"><div class="point-icon pi-tip"><i class="ti ti-bulb"></i></div><div class="point-text"><strong>DX Gateway</strong> は1本のDirect Connect接続から最大10リージョンのVPCに接続可。Transit Gatewayと組み合わせると数百VPCまでスケール。</div></li>
+    <li class="point-item"><div class="point-icon pi-warn"><i class="ti ti-alert-triangle"></i></div><div class="point-text"><strong>CloudFront vs Global Accelerator</strong>: HTTPアプリはCloudFront。非HTTP(ゲーム/VoIP)や静的IPが必要な場合はGlobal Accelerator。</div></li>
+    <li class="point-item"><div class="point-icon pi-key"><i class="ti ti-key"></i></div><div class="point-text"><strong>Route 53ルーティング</strong>: フェイルオーバー / 加重(A/Bテスト) / レイテンシー / 地理的 / 近接性(Bias) / 複数値応答 の6種類。</div></li>
+    <li class="point-item"><div class="point-icon pi-tip"><i class="ti ti-bulb"></i></div><div class="point-text"><strong>PrivateLink</strong> はVPCをまたいでサービスをプライベート公開。VPCピアリングと違い推移的ルーティングが不要。</div></li>
+  </ul></div>
+  <div id="pt-migration" class="inner-panel"><ul class="point-list">
+    <li class="point-item"><div class="point-icon pi-key"><i class="ti ti-key"></i></div><div class="point-text"><strong>DMS CDC(継続レプリケーション)</strong> が最小ダウンタイム移行の基本。ソースDBを止めずに差分同期し、カットオーバー時のダウンタイムを数分に圧縮。</div></li>
+    <li class="point-item"><div class="point-icon pi-warn"><i class="ti ti-alert-triangle"></i></div><div class="point-text"><strong>mysqldump は本番では非現実的</strong>。数TB規模では数時間〜数日のダウンタイム。最小ダウンタイム要件の問題では選ばない。</div></li>
+    <li class="point-item"><div class="point-icon pi-tip"><i class="ti ti-bulb"></i></div><div class="point-text"><strong>移行ステップ</strong>: Application Discovery Service(現状把握) → Migration Hub(進捗管理) → DMS/SMS(実移行)。まず Discovery が先。</div></li>
+    <li class="point-item"><div class="point-icon pi-key"><i class="ti ti-key"></i></div><div class="point-text"><strong>Snowball Edge</strong> は帯域が極端に低い場合の物理転送。ネットワーク帯域が十分あればDMS/DataSyncの方が効率的。</div></li>
+    <li class="point-item"><div class="point-icon pi-tip"><i class="ti ti-bulb"></i></div><div class="point-text"><strong>EMR</strong> は既存Hadoop/Spark/Hiveの移植に最適。GlueはサーバーレスSparkだがHadoopエコシステム全体の移植には制約がある。</div></li>
+  </ul></div>
+</div>
+
+<!-- ARCH -->
+<div id="sec-arch" class="section">
+  <div class="sec-title"><i class="ti ti-topology-star" style="font-size:18px;vertical-align:-2px;margin-right:7px;color:var(--blue)"></i>アーキテクチャ図解</div>
+  <p class="sec-sub">試験頻出パターンを視覚化</p>
+  <div class="card">
+    <div class="card-title"><i class="ti ti-refresh" style="color:var(--red)"></i>マルチリージョン DR — Aurora Global DB</div>
+    <svg class="arch-svg" viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a1" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#b3d8ff"/></marker><marker id="a2" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2da44e"/></marker></defs>
+      <rect x="10" y="10" width="300" height="180" rx="8" fill="#e6f4ff" stroke="#b3d8ff" stroke-width="1"/>
+      <text x="26" y="30" font-size="11" fill="#0550ae" font-weight="600" font-family="sans-serif">プライマリ (us-east-1)</text>
+      <rect x="24" y="40" width="100" height="36" rx="6" fill="#fff" stroke="#b3d8ff" stroke-width="1"/>
+      <text x="74" y="60" font-size="10" fill="#1a1a2e" text-anchor="middle" font-family="sans-serif">ALB</text>
+      <rect x="24" y="90" width="100" height="36" rx="6" fill="#fff" stroke="#b3d8ff" stroke-width="1"/>
+      <text x="74" y="110" font-size="10" fill="#1a1a2e" text-anchor="middle" font-family="sans-serif">ECS Fargate</text>
+      <rect x="24" y="140" width="100" height="36" rx="6" fill="#fff" stroke="#b3d8ff" stroke-width="1"/>
+      <text x="74" y="160" font-size="10" fill="#1a1a2e" text-anchor="middle" font-family="sans-serif">Aurora Writer</text>
+      <rect x="160" y="40" width="130" height="36" rx="6" fill="#fff" stroke="#b3d8ff" stroke-width="1"/>
+      <text x="225" y="60" font-size="10" fill="#0550ae" text-anchor="middle" font-family="sans-serif">Route 53 ARC</text>
+      <line x1="74" y1="76" x2="74" y2="90" stroke="#b3d8ff" stroke-width="1.5" marker-end="url(#a1)"/>
+      <line x1="74" y1="126" x2="74" y2="140" stroke="#b3d8ff" stroke-width="1.5" marker-end="url(#a1)"/>
+      <line x1="310" y1="158" x2="370" y2="158" stroke="#2da44e" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#a2)"/>
+      <text x="340" y="150" font-size="9" fill="#116329" text-anchor="middle" font-family="sans-serif">&lt;1秒</text>
+      <rect x="370" y="10" width="300" height="180" rx="8" fill="#f0fff4" stroke="#aceebb" stroke-width="1"/>
+      <text x="386" y="30" font-size="11" fill="#116329" font-weight="600" font-family="sans-serif">セカンダリ (ap-northeast-1)</text>
+      <rect x="384" y="40" width="100" height="36" rx="6" fill="#fff" stroke="#aceebb" stroke-width="1"/>
+      <text x="434" y="60" font-size="10" fill="#1a1a2e" text-anchor="middle" font-family="sans-serif">ALB (待機中)</text>
+      <rect x="384" y="90" width="100" height="36" rx="6" fill="#fff" stroke="#aceebb" stroke-width="1"/>
+      <text x="434" y="110" font-size="10" fill="#1a1a2e" text-anchor="middle" font-family="sans-serif">ECS (縮小構成)</text>
+      <rect x="384" y="140" width="100" height="36" rx="6" fill="#fff" stroke="#aceebb" stroke-width="1"/>
+      <text x="434" y="160" font-size="10" fill="#1a1a2e" text-anchor="middle" font-family="sans-serif">Aurora Reader</text>
+    </svg>
+    <p class="note">障害時: Route 53 ARCがDNSを切替 → セカンダリAuroraがWriterに昇格(RTO &lt;1分)</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><i class="ti ti-chart-bar" style="color:var(--teal)"></i>リアルタイムデータ収集パイプライン</div>
+    <svg class="arch-svg" viewBox="0 0 680 130" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a3" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#888"/></marker></defs>
+      <rect x="10" y="45" width="90" height="40" rx="6" fill="#fbefff" stroke="#e2c5fd" stroke-width="1"/>
+      <text x="55" y="63" font-size="10" fill="#512a97" text-anchor="middle" font-weight="600" font-family="sans-serif">IoTデバイス</text>
+      <text x="55" y="76" font-size="9" fill="#57606a" text-anchor="middle" font-family="sans-serif">10万台</text>
+      <rect x="140" y="45" width="100" height="40" rx="6" fill="#e6ffec" stroke="#9ce4c0" stroke-width="1"/>
+      <text x="190" y="63" font-size="10" fill="#0d5c3a" text-anchor="middle" font-weight="600" font-family="sans-serif">Kinesis DS</text>
+      <text x="190" y="76" font-size="9" fill="#57606a" text-anchor="middle" font-family="sans-serif">50シャード</text>
+      <rect x="290" y="10" width="100" height="40" rx="6" fill="#ddf4ff" stroke="#b6e3ff" stroke-width="1"/>
+      <text x="340" y="28" font-size="10" fill="#0550ae" text-anchor="middle" font-weight="600" font-family="sans-serif">Lambda</text>
+      <text x="340" y="41" font-size="9" fill="#57606a" text-anchor="middle" font-family="sans-serif">異常検知</text>
+      <rect x="290" y="80" width="100" height="40" rx="6" fill="#e6ffec" stroke="#9ce4c0" stroke-width="1"/>
+      <text x="340" y="98" font-size="10" fill="#0d5c3a" text-anchor="middle" font-weight="600" font-family="sans-serif">Firehose</text>
+      <text x="340" y="111" font-size="9" fill="#57606a" text-anchor="middle" font-family="sans-serif">Parquet変換</text>
+      <rect x="450" y="80" width="90" height="40" rx="6" fill="#fff8c5" stroke="#f0c000" stroke-width="1"/>
+      <text x="495" y="98" font-size="10" fill="#7d4e00" text-anchor="middle" font-weight="600" font-family="sans-serif">S3</text>
+      <text x="495" y="111" font-size="9" fill="#57606a" text-anchor="middle" font-family="sans-serif">データレイク</text>
+      <rect x="580" y="80" width="90" height="40" rx="6" fill="#fff8c5" stroke="#f0c000" stroke-width="1"/>
+      <text x="625" y="98" font-size="10" fill="#7d4e00" text-anchor="middle" font-weight="600" font-family="sans-serif">Athena</text>
+      <text x="625" y="111" font-size="9" fill="#57606a" text-anchor="middle" font-family="sans-serif">アドホック分析</text>
+      <line x1="100" y1="65" x2="140" y2="65" stroke="#888" stroke-width="1.5" marker-end="url(#a3)"/>
+      <line x1="240" y1="55" x2="290" y2="33" stroke="#888" stroke-width="1.5" marker-end="url(#a3)"/>
+      <line x1="240" y1="75" x2="290" y2="95" stroke="#888" stroke-width="1.5" marker-end="url(#a3)"/>
+      <line x1="390" y1="100" x2="450" y2="100" stroke="#888" stroke-width="1.5" marker-end="url(#a3)"/>
+      <line x1="540" y1="100" x2="580" y2="100" stroke="#888" stroke-width="1.5" marker-end="url(#a3)"/>
+    </svg>
+    <p class="note">Kinesis DS から Lambda(異常検知) と Firehose(S3蓄積) に並列配信。Athena で S3 をアドホッククエリ。</p>
+  </div>
+  <div class="card">
+    <div class="card-title"><i class="ti ti-network" style="color:var(--blue)"></i>ハイブリッド接続 — DX Gateway + Transit Gateway</div>
+    <svg class="arch-svg" viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a4" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#888"/></marker></defs>
+      <rect x="10" y="60" width="100" height="40" rx="6" fill="#fbefff" stroke="#e2c5fd" stroke-width="1"/>
+      <text x="60" y="78" font-size="10" fill="#512a97" text-anchor="middle" font-weight="600" font-family="sans-serif">オンプレミス</text>
+      <text x="60" y="91" font-size="9" fill="#57606a" text-anchor="middle" font-family="sans-serif">データセンター</text>
+      <rect x="160" y="60" width="100" height="40" rx="6" fill="#e6f4ff" stroke="#b3d8ff" stroke-width="1"/>
+      <text x="210" y="78" font-size="10" fill="#0550ae" text-anchor="middle" font-weight="600" font-family="sans-serif">Direct Connect</text>
+      <text x="210" y="91" font-size="9" fill="#57606a" text-anchor="middle" font-family="sans-serif">専用線</text>
+      <rect x="310" y="60" width="100" height="40" rx="6" fill="#e6f4ff" stroke="#b3d8ff" stroke-width="1"/>
+      <text x="360" y="78" font-size="10" fill="#0550ae" text-anchor="middle" font-weight="600" font-family="sans-serif">DX Gateway</text>
+      <text x="360" y="91" font-size="9" fill="#57606a" text-anchor="middle" font-family="sans-serif">グローバル</text>
+      <rect x="460" y="60" width="100" height="40" rx="6" fill="#dafbe1" stroke="#aceebb" stroke-width="1"/>
+      <text x="510" y="78" font-size="10" fill="#116329" text-anchor="middle" font-weight="600" font-family="sans-serif">Transit GW</text>
+      <text x="510" y="91" font-size="9" fill="#57606a" text-anchor="middle" font-family="sans-serif">ハブ</text>
+      <rect x="600" y="20" width="72" height="28" rx="5" fill="#fff8c5" stroke="#f0c000" stroke-width="1"/>
+      <text x="636" y="37" font-size="9" fill="#7d4e00" text-anchor="middle" font-family="sans-serif">VPC A</text>
+      <rect x="600" y="60" width="72" height="28" rx="5" fill="#fff8c5" stroke="#f0c000" stroke-width="1"/>
+      <text x="636" y="77" font-size="9" fill="#7d4e00" text-anchor="middle" font-family="sans-serif">VPC B</text>
+      <rect x="600" y="100" width="72" height="28" rx="5" fill="#fff8c5" stroke="#f0c000" stroke-width="1"/>
+      <text x="636" y="117" font-size="9" fill="#7d4e00" text-anchor="middle" font-family="sans-serif">VPC C ... N</text>
+      <line x1="110" y1="80" x2="160" y2="80" stroke="#888" stroke-width="1.5" marker-end="url(#a4)"/>
+      <line x1="260" y1="80" x2="310" y2="80" stroke="#888" stroke-width="1.5" marker-end="url(#a4)"/>
+      <line x1="410" y1="80" x2="460" y2="80" stroke="#888" stroke-width="1.5" marker-end="url(#a4)"/>
+      <line x1="560" y1="72" x2="600" y2="36" stroke="#888" stroke-width="1.5" marker-end="url(#a4)"/>
+      <line x1="560" y1="80" x2="600" y2="74" stroke="#888" stroke-width="1.5" marker-end="url(#a4)"/>
+      <line x1="560" y1="88" x2="600" y2="111" stroke="#888" stroke-width="1.5" marker-end="url(#a4)"/>
+    </svg>
+    <p class="note">1本のDirect Connect → DX Gateway → Transit Gatewayで数百VPCを集約管理。VPCピアリングフルメッシュ不要。</p>
+  </div>
+</div>
+
+<!-- GLOSSARY -->
+<div id="sec-glossary" class="section">
+  <div class="sec-title"><i class="ti ti-book" style="font-size:18px;vertical-align:-2px;margin-right:7px;color:var(--blue)"></i>用語集・略語</div>
+  <p class="sec-sub">試験頻出の略語と用語（検索可能）</p>
+  <div class="gl-search"><input type="text" id="glSearch" placeholder="略語・用語・説明で検索..." oninput="filterGL(this.value)"></div>
+  <div class="gl-grid" id="glGrid"></div>
+</div>
+
+</main>
+</div>
+<script>
+function show(id,el){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.getElementById('sec-'+id).classList.add('active');el.classList.add('active')}
+function itab(p,id,el){document.querySelectorAll('[id^="'+p+'-"]').forEach(x=>x.classList.remove('show'));document.getElementById(p+'-'+id).classList.add('show');el.closest('.inner-tabs').querySelectorAll('.inner-tab').forEach(t=>t.classList.remove('on'));el.classList.add('on')}
+const GL=[
+  {abbr:"RPO",full:"Recovery Point Objective",desc:"障害発生時に許容できる最大データ損失時間。RPO=0はデータ損失なし。"},
+  {abbr:"RTO",full:"Recovery Time Objective",desc:"障害発生から復旧までの目標時間。RTO<1分=Aurora Global DB等が必要。"},
+  {abbr:"HA",full:"High Availability",desc:"高可用性。Multi-AZ構成やAuto Scalingで実現。"},
+  {abbr:"DR",full:"Disaster Recovery",desc:"災害復旧。Backup&Restore/Pilot Light/Warm Standby/Multi-Siteの4戦略。"},
+  {abbr:"VPC",full:"Virtual Private Cloud",desc:"AWSの仮想ネットワーク。サブネット/ルートテーブル/セキュリティグループで構成。"},
+  {abbr:"IGW",full:"Internet Gateway",desc:"VPCとインターネット間の通信を担うゲートウェイ。1VPCに1つ。"},
+  {abbr:"NAT",full:"Network Address Translation",desc:"プライベートサブネットのアウトバウンドインターネット通信を可能にする。"},
+  {abbr:"SCP",full:"Service Control Policy",desc:"AWS Organizationsで使うポリシー。OU/アカウントに適用しIAMの上位制御。"},
+  {abbr:"IAM",full:"Identity and Access Management",desc:"AWSリソースへのアクセス権限管理。ユーザー/グループ/ロール/ポリシーで構成。"},
+  {abbr:"CMK",full:"Customer Managed Key",desc:"KMSで顧客が管理する暗号化キー。自動ローテーション・アクセス制御が可能。"},
+  {abbr:"HSM",full:"Hardware Security Module",desc:"物理的な暗号化専用ハードウェア。CloudHSMはFIPS 140-2 Level 3対応。"},
+  {abbr:"FIPS",full:"Federal Information Processing Standard",desc:"米国政府の暗号化標準。Level 3はCloudHSMが対応。金融/政府系で必須。"},
+  {abbr:"CDC",full:"Change Data Capture",desc:"DBの変更を継続的にキャプチャする技術。DMSで使用し最小ダウンタイム移行を実現。"},
+  {abbr:"DMS",full:"Database Migration Service",desc:"AWSのDBマイグレーションサービス。同種/異種DB間の移行とCDCによる継続レプリケーション。"},
+  {abbr:"ALB",full:"Application Load Balancer",desc:"L7ロードバランサー。パスベース/ホストベースルーティング・WebSocket対応。"},
+  {abbr:"NLB",full:"Network Load Balancer",desc:"L4ロードバランサー。超高性能・静的IP・TCP/UDP対応。TLSオフロードも可能。"},
+  {abbr:"ECS",full:"Elastic Container Service",desc:"AWSのコンテナオーケストレーション。EC2またはFargate上でDockerコンテナを管理。"},
+  {abbr:"EKS",full:"Elastic Kubernetes Service",desc:"マネージドKubernetes。既存K8sワークロードをそのまま移行可能。"},
+  {abbr:"SQS",full:"Simple Queue Service",desc:"マネージドメッセージキュー。Standard(高スループット)とFIFO(順序保証)の2種類。"},
+  {abbr:"SNS",full:"Simple Notification Service",desc:"Pub/Subメッセージング。1つのトピックから複数サブスクライバへファンアウト配信。"},
+  {abbr:"DLQ",full:"Dead Letter Queue",desc:"処理に失敗したメッセージを隔離するキュー。SQS/SNSで設定可。デバッグに有効。"},
+  {abbr:"KDS",full:"Kinesis Data Streams",desc:"リアルタイムストリームデータ収集・処理。シャード単位でスケール。"},
+  {abbr:"KDF",full:"Kinesis Data Firehose",desc:"ストリームデータをS3/Redshift/OpenSearchへ配信。Parquet変換・圧縮対応。"},
+  {abbr:"TGW",full:"Transit Gateway",desc:"ハブ&スポーク型でVPCを集約接続。VPN/DXアタッチメント・リージョン間ピアリング対応。"},
+  {abbr:"DX",full:"Direct Connect",desc:"AWSとオンプレミス間の専用線接続。1/10Gbps。低遅延・高安定。"},
+  {abbr:"WAF",full:"Web Application Firewall",desc:"L7レイヤーのフィルタリング。SQLインジェクション/XSS/レートリミット等をルールで制御。"},
+  {abbr:"PII",full:"Personally Identifiable Information",desc:"個人を特定できる情報。Macieが自動検出。GDPR/HIPAAで保護対象。"},
+  {abbr:"BYOL",full:"Bring Your Own License",desc:"既存のソフトウェアライセンスをAWSに持込む方式。Dedicated Hostが必要なケースあり。"},
+  {abbr:"EMR",full:"Elastic MapReduce",desc:"マネージドHadoop/Sparkクラスタ。既存Hadoop資産のリフト&シフト移行に最適。"},
+  {abbr:"DAX",full:"DynamoDB Accelerator",desc:"DynamoDB専用インメモリキャッシュ。マイクロ秒レスポンス。アプリ変更最小。"},
+  {abbr:"TTL",full:"Time To Live",desc:"DynamoDBのアイテム自動削除機能。期限切れアイテムをバックグラウンドで削除。"},
+  {abbr:"ARC",full:"Application Recovery Controller",desc:"Route 53の機能。マルチリージョンフェイルオーバーを安全にオーケストレーション。"},
+];
+document.getElementById('glGrid').innerHTML=GL.map(g=>`<div class="gl-item" data-s="${g.abbr} ${g.full} ${g.desc}"><div class="gl-abbr">${g.abbr}</div><div class="gl-full">${g.full}</div><div class="gl-desc">${g.desc}</div></div>`).join('');
+function filterGL(q){document.querySelectorAll('.gl-item').forEach(el=>el.classList.toggle('hidden',!el.dataset.s.toLowerCase().includes(q.toLowerCase())))}
+</script>
+</body>
+</html>
