@@ -29,7 +29,8 @@ open index.html   # macOS
 
 ```
 aws-sap-study/
-├── index.html   # アプリ本体（全コード同梱）
+├── index.html    # 問題演習アプリ
+├── study.html    # 参考書ページ（チートシート・比較表・図解・用語集）
 └── README.md
 ```
 
